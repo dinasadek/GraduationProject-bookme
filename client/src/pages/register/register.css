@@ -1,0 +1,48 @@
+input{
+    box-shadow: none !important;
+    margin-top: 10px;
+    border: 1px solid black !important;
+    display: block;
+    height: 30px;
+    padding: 10px;
+    margin: 10px;
+
+}
+
+h1{
+    font-size: 30px !important;
+    padding: 10px;
+    font-weight: bold !important;
+    text-align: center;
+}
+.row{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+
+.btn {
+    border: none;
+    padding: 10px 20px;
+    background-color: #0071c2;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+    
+}
+
+.btn:disabled{
+    background-color: #0071c28c;
+    cursor: not-allowed;
+}
