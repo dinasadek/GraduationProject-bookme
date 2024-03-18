@@ -1,4 +1,5 @@
 import Navbar from '../../components/navbar/Navbar';
+import MailList from '../../components/mailList/MailList';
 import Footer from '../../components/footer/Footer';
 
 import React, { useState } from 'react';
@@ -59,7 +60,7 @@ const Settings = () => {
       </form>
     
     </div>
-    
+     <MailList/>
     </div>
    
     
