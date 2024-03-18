@@ -1,55 +1,78 @@
-import React, { useState } from 'react';
+import Navbar from '../../components/navbar/Navbar';
+import Footer from '../../components/footer/Footer';
 
-function PaymentPage() {
+import React, { useState } from 'react';
+import "./payment.css";
+const Settings = () => {
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
 
-  const handleCardNumberChange = (event) => {
-    setCardNumber(event.target.value);
-  };
-
-  const handleExpiryDateChange = (event) => {
-    setExpiryDate(event.target.value);
-  };
-
-  const handleCvvChange = (event) => {
-    setCvv(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Perform payment processing logic here
+  const handlePaymentSubmit = (e) => {
+    e.preventDefault();
+    // Handle payment submission logic here
+    console.log('Payment submitted!');
   };
 
   return (
     <div>
-      <h1>Payment Page</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Card Number:</label>
+     <Navbar/>
+    <div className="page-style">
+    <div className="payment-container">
+      <h2> Pay Here ! </h2>
+      <h3 className="pay-here"> Enter Your payment details </h3>
+      <form onSubmit={handlePaymentSubmit}>
+        <div className="form-group">
+          <label htmlFor="cardNumber">CardNumber</label>
           <input
             type="text"
+            id="cardNumber"
             value={cardNumber}
-            onChange={handleCardNumberChange}
+            onChange={(e) => setCardNumber(e.target.value)}
+            placeholder="Enter card number"
+            required
           />
         </div>
-        <div>
-          <label>Expiry Date:</label>
+        <div className="form-group">
+          <label htmlFor="expiryDate">ExpiryDate</label>
           <input
             type="text"
+            id="expiryDate"
             value={expiryDate}
-            onChange={handleExpiryDateChange}
+            onChange={(e) => setExpiryDate(e.target.value)}
+            placeholder="MM/YY"
+            required
           />
         </div>
-        <div>
-          <label>CVV:</label>
-          <input type="text" value={cvv} onChange={handleCvvChange} />
+        <div className="form-group">
+          <label htmlFor="cvv">CVV</label>
+          <input
+            type="text"
+            id="cvv"
+            value={cvv}
+            onChange={(e) => setCvv(e.target.value)}
+            placeholder="Enter CVV"
+            required
+          />
         </div>
-        <button type="submit">Pay Now</button>
+        <button type="submit"> Submit </button>
       </form>
+    
+    </div>
+    
+    </div>
+   
+    
+    
+    <Footer/>
+  
     </div>
   );
-}
+};
 
-export default PaymentPage;
+export default Settings;
+
+
+
+ 
+          
