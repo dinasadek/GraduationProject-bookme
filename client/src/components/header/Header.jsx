@@ -63,30 +63,30 @@ const Header = ({ type }) => {
       >
         <div className="headerList">
           <div className="headerListItem active">
+            <FontAwesomeIcon icon={faHome} />
+            <span>Home</span>
+          </div>
+          <div className="headerListItem">
+            <FontAwesomeIcon icon={faDollar} />
+            <span>Offers & Inspiration</span>
+          </div>
+          <div className="headerListItem">
+            <FontAwesomeIcon icon={faFileInvoice} />
+            <span>Plans</span>
+          </div>
+          <div className="headerListItem">
             <FontAwesomeIcon icon={faBed} />
-            <span>Stays</span>
+            <span>Rooms</span>
           </div>
           <div className="headerListItem">
-            <FontAwesomeIcon icon={faPlane} />
-            <span>Flights</span>
-          </div>
-          <div className="headerListItem">
-            <FontAwesomeIcon icon={faCar} />
-            <span>Car rentals</span>
-          </div>
-          <div className="headerListItem">
-            <FontAwesomeIcon icon={faBed} />
-            <span>Attractions</span>
-          </div>
-          <div className="headerListItem">
-            <FontAwesomeIcon icon={faTaxi} />
-            <span>Airport taxis</span>
+            <FontAwesomeIcon icon={faPhone} />
+            <span>Contact</span>
           </div>
         </div>
         {type !== "list" && (
           <>
             <h1 className="headerTitle">
-              A lifetime of discounts? It's Genius.
+             Enjoy Your Vacation With Us,
             </h1>
             <p className="headerDesc">
               Get rewarded for your travels – unlock instant savings of 10% or
