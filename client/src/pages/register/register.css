@@ -8,3 +8,40 @@ input{
     margin: 10px;
 
 }
+
+h1{
+    font-size: 30px !important;
+    padding: 10px;
+    font-weight: bold !important;
+    text-align: center;
+}
+.row{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+
+.btn {
+    border: none;
+    padding: 10px 20px;
+    background-color: #0071c2;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    
+}
+
+.btn:disabled{
+    background-color: #0071c28c;
+    cursor: not-allowed;
+}
