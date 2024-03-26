@@ -5,6 +5,11 @@ import {
   faPerson,
   faPlane,
   faTaxi,
+  faHome,
+  faDollar,
+  faFileInvoice,
+  faPhone,
+
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./header.css";
