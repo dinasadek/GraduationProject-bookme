@@ -36,3 +36,15 @@ export const getUsers = async (req,res,next)=>{
     next(err);
   }
 }
+
+export const createUsers = async(req ,res)=>{
+
+  const newuser = new User({name : req.body.name , email : req.body.email , name : req.body.password })
+  try{
+    const user = await newuser.save()
+    res.send("user registered successfully")
+  } catch (error){
+    return res.status(400).json({error});
+  }
+
+};

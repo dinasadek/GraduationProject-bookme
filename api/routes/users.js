@@ -4,10 +4,15 @@ import {
   deleteUser,
   getUser,
   getUsers,
+  createUsers
 } from "../controllers/user.js";
+import User from "../models/User.js";
 import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js";
-
+//const user = require("../models/User.js")
 const router = express.Router();
+
+router.post("/register", createUsers);
+
 
 // router.get("/checkauthentication", verifyToken, (req,res,next)=>{
 //   res.send("hello user, you are logged in")

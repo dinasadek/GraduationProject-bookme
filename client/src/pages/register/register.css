@@ -1,36 +1,22 @@
-input{
-    box-shadow: none !important;
-    margin-top: 10px;
-    border: 1px solid black !important;
-    display: block;
-    height: 30px;
-    padding: 10px;
-    margin: 10px;
-
-}
-
-h1{
-    font-size: 30px !important;
-    padding: 10px;
-    font-weight: bold !important;
-    text-align: center;
-}
-.row{
+.register {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.col {
+.rContainer {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
+.rInput{
+    height: 30px;
+    padding: 10px;
+}
 
-
-.btn {
+.rButton {
     border: none;
     padding: 10px 20px;
     background-color: #0071c2;
@@ -38,10 +24,9 @@ h1{
     font-weight: bold;
     cursor: pointer;
     border-radius: 5px;
-    
 }
 
-.btn:disabled{
+.rButton:disabled{
     background-color: #0071c28c;
     cursor: not-allowed;
 }
