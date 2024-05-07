@@ -7,11 +7,26 @@ import { useContext, useState } from "react";
 import { SearchContext } from "../../context/SearchContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+//import { useLocation } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 const Reserve = ({ setOpen, hotelId }) => {
   const [selectedRooms, setSelectedRooms] = useState([]);
-  const { data, loading, error } = useFetch(`/hotels/room/${hotelId}`);
-  const { dates } = useContext(SearchContext);
+  const roomdata = useFetch(`http://localhost:8800/api/hotels/room/${hotelId}`);
+  const hoteldata = useFetch(`http://localhost:8800/api/hotels/find/${hotelId}`);
+  const { dates, options } = useContext(SearchContext);
+  const { user  } = useContext(AuthContext);
+
+  const generateCustomUUID = () => {
+    const uuid = uuidv4();
+    // Remove hyphens and return the first 22 characters
+    if (!user.CurrentBookings.some(booking => booking.id === uuid.replace(/-/g, '').substring(0, 22))) {
+      // If the ID is not found in any of the reviews, return the ID
+      return uuid.replace(/-/g, '').substring(0, 22);
+    }
+  };
+  
 
   const getDatesInRange = (startDate, endDate) => {
     const start = new Date(startDate);
@@ -50,6 +65,182 @@ const Reserve = ({ setOpen, hotelId }) => {
   };
 
   const navigate = useNavigate();
+  /*const fetchRoomTitles = async () => {
+    try {
+      const response = await fetch('http://localhost:8800/api/rooms/getRoomsByIds', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          roomIds:searchRooms(selectedRooms), // Replace with your array of room IDs
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch room titles');
+      }
+  
+      const RoomTitles = await response.json();
+      return (RoomTitles); // Array of room titles
+    } catch (error) {
+      console.error('Error fetching room titles:', error.message);
+    }
+  };*/
+  
+
+  const searchRoomsForHotels = async (hotelRooms, selectedRoomNumbers) => {
+    try {
+      const roomTitles = [];
+  
+      // Iterate over each room ID in the hotel
+      for (const roomId of hotelRooms) {
+        // Find the room by ID
+        const room = roomdata.data.find(room => room._id === roomId);
+        if (!room) {
+          throw new Error(`Room with ID ${roomId} not found`);
+        }
+  
+        // Iterate over each room number in the room
+        for (const roomNumber of room.roomNumbers) {
+          // Check if the room number matches any selected room number
+          if (selectedRoomNumbers.includes(roomNumber._id.toString())) {
+            roomTitles.push(room.title);
+            // If a match is found, push the room title to the roomTitles array
+            break; // No need to search further in this room
+          }
+        }
+      }
+      return roomTitles;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Failed to search rooms for hotels');
+    }
+  };
+
+  const getReservation = async (hotelRooms, selectedRoomNumbers) => {
+    try {
+      const roomDetails = [];
+      let totalPrice = 0; // Initialize total price
+  
+      // Iterate over each room ID in the hotel
+      for (const roomId of hotelRooms) {
+        // Find the room by ID
+        const room = roomdata.data.find(room => room._id === roomId);
+        if (!room) {
+          throw new Error(`Room with ID ${roomId} not found`);
+        }
+  
+        // Initialize count of selected rooms and room total price
+        let selectedRoomCount = 0;
+        let roomTotalPrice = 0;
+        const selectedRoomsId =[];
+  
+        // Iterate over each room number in the room
+        for (const roomNumber of room.roomNumbers) {
+          // Check if the room number matches any selected room number
+          if (selectedRoomNumbers.includes(roomNumber._id.toString())) {
+            selectedRoomCount++;
+            selectedRoomsId.push(roomNumber._id.toString());
+            roomTotalPrice += room.price; // Add room price to room total price
+          }
+        }
+  
+        // Add room total price to the total price
+        totalPrice += roomTotalPrice;
+  
+        // Push room details to the roomDetails array
+      
+        roomDetails.push({
+          hotelId:hotelId,
+          roomtitle: room.title,
+          roomid:room._id,
+          selectedRoomCount,
+          selectedRoomsId:selectedRoomsId,
+          roomPrice: roomTotalPrice, // Update to room total price
+        });
+      }
+      
+      return {totalPrice,roomDetails} ; // Return both room details and total price
+    } catch (error) {
+      console.error(error);
+      throw new Error('Failed to search rooms for hotels');
+    }
+  };
+
+  
+  
+  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
+  function dayDifference(date1, date2) {
+    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
+    return diffDays;
+  }
+  /*function getFullDayName(abbreviation) {
+    const days = {
+      Mon: "Monday",
+      Tue: "Tuesday",
+      Wed: "Wednesday",
+      Thu: "Thursday",
+      Fri: "Friday",
+      Sat: "Saturday",
+      Sun: "Sunday"
+    };
+  
+    return days[abbreviation];
+  }*/
+  
+  const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  const fparts = dates[0].startDate.toString().split(" ");
+  const tparts = dates[0].endDate.toString().split(" ");
+  const fromDate = `${fparts[0]}, ${fparts[1]} ${fparts[2]}, ${fparts[3]}`;
+  const toDate = `${tparts[0]}, ${tparts[1]} ${tparts[2]}, ${tparts[3]}`;
+
+  
+  //console.log(selectedRooms);
+  
+
+  const addBookingCard = async () => {
+    try {
+      
+      const roomNames = await searchRoomsForHotels(hoteldata.data.rooms,selectedRooms);
+      const roomsTotalPrice = (await getReservation(hoteldata.data.rooms,selectedRooms)).totalPrice;
+      const RoomDetails = (await getReservation(hoteldata.data.rooms,selectedRooms)).roomDetails.filter(room => roomNames.includes(room.title));
+  
+      const bookingCard={
+        id: generateCustomUUID(),
+        fromDate: fromDate,
+        toDate: toDate,
+        city: hoteldata.data.city,    
+        numberOfAdults: options.adult,
+        numberOfChildren: options.children,
+        hotelName: hoteldata.data.name,
+        numberOfRooms: selectedRooms.length,
+        roomNames: roomNames,
+        ReservationDetails: RoomDetails,
+        totalCost:  roomsTotalPrice + days * hoteldata.data.cheapestPrice
+      };
+      const userId = user._id; 
+      const response = await fetch(`http://localhost:8800/api/users/${userId}/currentbookings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({bookingCard:bookingCard,userId: userId})
+      });
+
+  
+      if (!response.ok) {
+        throw new Error('Failed to add booking');
+      }
+  
+      // Handle success
+      setOpen(false);
+      navigate('/');
+    } catch (error) {
+      console.error('Error adding booking:', error.message);
+    }
+  };
 
   const handleClick = async () => {
     try {
@@ -63,8 +254,10 @@ const Reserve = ({ setOpen, hotelId }) => {
       );
       setOpen(false);
       navigate("/");
-    } catch (err) {}
+    } catch (err) {};
+    addBookingCard();
   };
+  
   return (
     <div className="reserve">
       <div className="rContainer">
@@ -74,7 +267,7 @@ const Reserve = ({ setOpen, hotelId }) => {
           onClick={() => setOpen(false)}
         />
         <span>Select your rooms:</span>
-        {data.map((item) => (
+        {roomdata.data.map((item) => (
           <div className="rItem" key={item._id}>
             <div className="rItemInfo">
               <div className="rTitle">{item.title}</div>
@@ -108,3 +301,4 @@ const Reserve = ({ setOpen, hotelId }) => {
 };
 
 export default Reserve;
+

@@ -92,4 +92,10 @@ button:hover {
   background-color:navy;
 }
 
- 
+.End_Page{
+  margin-top: 50px;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 30px;
+}  

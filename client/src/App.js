@@ -7,7 +7,9 @@ import Home from "./pages/home/Home";
 import Hotel from "./pages/hotel/Hotel";
 import List from "./pages/list/List";
 import Login from "./pages/login/Login";
-import Register from "./pages/register/register";
+import Register from "./pages/register/register.jsx";
+import Profile from "./pages/profile/Profile";
+import NewReview from "./pages/newReview/NewReview.jsx";
 
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
         <Route path="/hotels/:id" element={<Hotel/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
+        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/new-review" element={<NewReview/>}/>
 
       </Routes>
     </BrowserRouter>

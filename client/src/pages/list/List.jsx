@@ -7,17 +7,50 @@ import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const List = () => {
   const location = useLocation();
-  const [destination, setDestination] = useState(location.state.destination);
+  const [destination] = useState(location.state.destination);
   const [dates, setDates] = useState(location.state.dates);
   const [openDate, setOpenDate] = useState(false);
-  const [options, setOptions] = useState(location.state.options);
+  const [options] = useState(location.state.options);
   const [min, setMin] = useState(undefined);
   const [max, setMax] = useState(undefined);
 
-  const { data, loading, error, reFetch } = useFetch(
+  const { user } = useContext(AuthContext);
+  const userId =user._id;
+  const [image, setImage] = useState();
+    
+  useEffect(() => {
+
+
+    const getUserImage = async () => {
+        try {
+          const response = await fetch(`http://localhost:8800/api/users/${userId}`);
+          if (response.ok) {
+            const user = await response.json();
+            if (user.img!==""){
+
+                setImage(user.img);
+            }else{
+                setImage(null);
+            }
+            
+          } else {
+            throw new Error("Failed to fetch user image");
+          }
+        } catch (error) {
+          console.error("Error fetching user image:", error);
+        }
+      };
+      getUserImage();
+    }, [userId]);
+    
+
+  const { data, loading, reFetch } = useFetch(
     `/hotels?city=${destination}&min=${min || 0 }&max=${max || 999}`
   );
 
@@ -27,7 +60,7 @@ const List = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar image={image}/>
       <Header type="list" />
       <div className="listContainer">
         <div className="listWrapper">

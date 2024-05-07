@@ -97,3 +97,11 @@ export const getHotelRooms = async (req, res, next) => {
     next(err);
   }
 };
+export const getHotelNames = async (req, res, next) => {
+  try {
+    const hotels = await Hotel.find({}, 'name'); // Retrieve only the 'name' field
+    res.status(200).json(hotels);
+  } catch (err) {
+    next(err);
+  }
+};

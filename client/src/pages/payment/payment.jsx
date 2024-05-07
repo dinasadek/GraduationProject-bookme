@@ -1,6 +1,9 @@
 import Navbar from '../../components/navbar/Navbar';
 import MailList from '../../components/mailList/MailList';
 import Footer from '../../components/footer/Footer';
+import { useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 import React, { useState } from 'react';
 import "./payment.css";
@@ -8,6 +11,36 @@ const Settings = () => {
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
+
+  const { user } = useContext(AuthContext);
+  const userId =user._id;
+  const [image, setImage] = useState();
+    
+  useEffect(() => {
+
+
+    const getUserImage = async () => {
+        try {
+          const response = await fetch(`http://localhost:8800/api/users/${userId}`);
+          if (response.ok) {
+            const user = await response.json();
+            if (user.img!==""){
+
+                setImage(user.img);
+            }else{
+                setImage(null);
+            }
+            
+          } else {
+            throw new Error("Failed to fetch user image");
+          }
+        } catch (error) {
+          console.error("Error fetching user image:", error);
+        }
+      };
+      getUserImage();
+    }, [userId]);
+    
 
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
@@ -17,7 +50,7 @@ const Settings = () => {
 
   return (
     <div>
-     <Navbar/>
+     <Navbar image={image}/>
     <div className="page-style">
     <div className="payment-container">
       <h2> Pay Here ! </h2>
@@ -60,12 +93,14 @@ const Settings = () => {
       </form>
     
     </div>
-     <MailList/>
+    
     </div>
    
     
-    
-    <Footer/>
+    <div className="End_Page">
+        <MailList />
+        <Footer />
+        </div>
   
     </div>
   );

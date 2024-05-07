@@ -1,0 +1,54 @@
+/* newReview.css */
+
+.new-review-container {
+  max-width: 600px;
+  margin: 25px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.new-review-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.new-review-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.new-review-container label {
+  margin-bottom: 5px;
+}
+
+.new-review-container select,
+.new-review-container textarea {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.new-review-container .rating {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.new-review-container .star {
+  color: #ccc;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.new-review-container .selected {
+  color: #ffc107;
+}
+.End_Page{
+  margin-top: 50px;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 30px;
+}  

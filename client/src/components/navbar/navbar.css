@@ -1,5 +1,5 @@
 .navbar{
-    height: 50px;
+    height: 62px;
     background-color: #2196f3;
     display: flex;
     justify-content: center;
@@ -17,6 +17,7 @@
   .logo{
     font-weight: 1100;
   }
+
   
   .navButton{
     margin-left: 20px;
@@ -24,4 +25,21 @@
     padding: 5px 10px;
     cursor: pointer;
     color: #2196f3;
+  }
+
+  .image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .username{
+    margin-left: 10px;
+  
+  }
+  .navItems{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+  
   }

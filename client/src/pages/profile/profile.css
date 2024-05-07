@@ -1,0 +1,191 @@
+/* Profile.css */
+
+.profile {
+    max-width: 1100px;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+
+  .upload {
+    cursor: pointer;
+    font-weight: normal;
+
+  }
+  
+  .profile-name {
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .profile-email {
+    font-style: italic;
+    color: #666;
+  }
+  
+  .current-bookings,
+  .history-bookings {
+    margin-top: 20px;
+  }
+  
+  .current-bookings h2,
+  .history-bookings h2 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .current-bookings ul,
+  .history-bookings ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .current-bookings li,
+  .history-bookings li {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+  }
+  
+  .booking-details {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .booking-details>div {
+    flex: 1 1 45%;
+  }
+  
+  .booking-date,
+  .booking-location,
+  .booking-details,
+  .booking-status {
+    margin-top: 5px;
+    color: #666;
+  }
+  
+  .booking-status {
+    font-weight: bold;
+    color: #007bff;
+    /* Example color for status */
+  }
+  
+  .review-list {
+    margin-top: 20px;
+  }
+  
+  .review-list h2 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .review-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .review-list li {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+  }
+  
+  .review-list div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  
+  .review-list span {
+    color: #666;
+  }
+  
+  .rating {
+    display: inline-block;
+  }
+  
+  .star {
+    color: #ffc107;
+    /* Star color */
+    font-size: 1.2em;
+    /* Adjust the size of the stars */
+    margin-right: 2px;
+    /* Add some spacing between the stars */
+  }
+  
+  .review-list p {
+    margin: 5px 0;
+  }
+  
+  .review-list .hotel-name {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .new-review {
+    margin-top: 20px;
+  }
+  
+  .new-review h2 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .new-review p {
+    margin-bottom: 10px;
+    color: #666;
+  }
+  
+  .new-review label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .new-review select,
+  .new-review textarea {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .new-review .rating {
+    margin-bottom: 10px;
+  }
+  
+  .new-review .star {
+    color: #ffc107;
+    /* Star color */
+  }
+  
+.End_Page{
+    margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}  

@@ -48,3 +48,159 @@ export const createUsers = async(req ,res)=>{
   }
 
 };
+
+export const addReviewToUser = async (req, res, next) => {
+  const {reviewContent} = req.body; // Assuming the review content is in the request body
+  const {userid}=req.body;
+
+  try {
+    // Create a new review object
+    const newReview = reviewContent;
+
+    // Find the user by ID and update their reviews array
+    const user = await User.findByIdAndUpdate(userid, {
+      $push: { reviews: newReview },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Review added successfully', user });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+export const getUserReviews = async (req, res, next) => {
+  try {
+    // Find the user by ID
+    const user = await User.findById(req.params.id);
+
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // If user exists, get their reviews
+    const userReviews = user.reviews;
+
+    // Respond with user's reviews
+    res.status(200).json(userReviews);
+  } catch (err) {
+    // If any error occurs, pass it to the error handler middleware
+    next(err);
+  }
+};
+
+export const getUserCurrentBokings = async (req, res, next) => {
+  try {
+    // Find the user by ID
+    const user = await User.findById(req.params.id);
+
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // If user exists, get their reviews
+    const currentBookings = user.CurrentBookings;
+
+    // Respond with user's reviews
+    res.status(200).json(currentBookings);
+  } catch (err) {
+    // If any error occurs, pass it to the error handler middleware
+    next(err);
+  }
+};
+
+export const addCurrentBookingToUser = async (req, res, next) => {
+  const {userId } = req.body;
+  const{bookingCard}=req.body;
+
+  try {
+    // Create a new booking card object
+    const newBooking = bookingCard;
+
+    // Find the user by ID and update their currentBookings array
+    const user = await User.findByIdAndUpdate(userId, {
+      $push: { CurrentBookings: newBooking },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Booking added successfully', user });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+export const addHistoryBookingToUser = async (req, res, next) => {
+  const {userId } = req.body.userId;
+  const{bookingCard}=req.body.bookingCard;
+
+  try {
+    // Create a new booking card object
+    const newBooking = bookingCard;
+
+    // Find the user by ID and update their currentBookings array
+    const user = await User.findByIdAndUpdate(userId, {
+      $push: { HistoryBookings: newBooking },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Booking added successfully', user });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+
+export const getUserHistoryBokings = async (req, res, next) => {
+  try {
+    // Find the user by ID
+    const user = await User.findById(req.params.id);
+
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // If user exists, get their reviews
+    const historyBookings = user.HistoryBookings;
+
+    // Respond with user's reviews
+    res.status(200).json(historyBookings);
+  } catch (err) {
+    // If any error occurs, pass it to the error handler middleware
+    next(err);
+  }
+};
+
+export const removeCurrentBookingFromUser = async (req, res, next) => {
+  const userId = req.params.id;
+  const { bookingId }= req.body.bookingId;
+
+  try {
+    // Find the user by ID and update their CurrentBookings array
+    const user = await User.findByIdAndUpdate(userId, {
+      $pull: { CurrentBookings: { id: bookingId } }, // Remove the booking with matching ID
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'Booking removed successfully' });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+

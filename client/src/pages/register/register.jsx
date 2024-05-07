@@ -10,7 +10,10 @@ const Register = () => {
     email: "",
     password: "",
     repassword: "",
-    
+    country:"",
+    city:"",
+    phone:"",
+    img:""
     // Add other necessary fields for registration
   });
 
@@ -51,10 +54,31 @@ const Register = () => {
           onChange={handleChange}
           className="rInput"
         />
-                <input
+        <input
           type="email"
           placeholder="Email"
           id="email"
+          onChange={handleChange}
+          className="rInput"
+        />
+        <input
+          type="text"
+          placeholder="country"
+          id="country"
+          onChange={handleChange}
+          className="rInput"
+        />
+        <input
+          type="text"
+          placeholder="city"
+          id="city"
+          onChange={handleChange}
+          className="rInput"
+        />
+        <input
+          type="text"
+          placeholder="phone"
+          id="phone"
           onChange={handleChange}
           className="rInput"
         />
@@ -72,6 +96,8 @@ const Register = () => {
           onChange={handleChange}
           className="rInput"
         />
+
+
 
         {/* Add other necessary input fields for registration */}
         <button disabled={loading} onClick={handleClick} className="rButton">

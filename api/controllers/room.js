@@ -80,3 +80,35 @@ export const getRooms = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getRoomsByIds = async (req, res, next) => {
+  try {
+    const roomIds = req.body.roomIds; // Assuming the array of room IDs is passed in the request body
+    const rooms = await Room.find({ _id: { $in: roomIds } });
+
+    // Extract room titles from the fetched rooms
+    const roomTitles = rooms.map(room => room.title);
+
+    res.status(200).json(roomTitles);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteOldDatesFromRooms = async (req, res, next) => {
+  try {
+    // Define the threshold date for old dates (e.g., today's date minus 1 day)
+    const thresholdDate = new Date();
+    thresholdDate.setDate(thresholdDate.getDate() - 1);
+
+    // Update all rooms to remove old dates from unavailableDates
+    await Room.updateMany(
+      { 'roomNumbers.unavailableDates': { $lt: thresholdDate } }, // Find rooms with old dates
+      { $pull: { 'roomNumbers.$.unavailableDates': { $lt: thresholdDate } } } // Remove old dates
+    );
+
+    res.status(200).json('Old dates have been deleted from room availability.');
+  } catch (err) {
+    next(err);
+  }
+};
