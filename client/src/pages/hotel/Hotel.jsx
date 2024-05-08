@@ -1,22 +1,22 @@
-import "./hotel.css";
-import Navbar from "../../components/navbar/Navbar";
-import Header from "../../components/header/Header";
-import MailList from "../../components/mailList/MailList";
-import Footer from "../../components/footer/Footer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleArrowLeft,
   faCircleArrowRight,
   faCircleXmark,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useState } from "react";
-import useFetch from "../../hooks/useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SearchContext } from "../../context/SearchContext";
-import { AuthContext } from "../../context/AuthContext";
+import Footer from "../../components/footer/Footer";
+import Header from "../../components/header/Header";
+import MailList from "../../components/mailList/MailList";
+import Navbar from "../../components/navbar/Navbar";
 import Reserve from "../../components/reserve/Reserve";
-import { useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { SearchContext } from "../../context/SearchContext";
+import useFetch from "../../hooks/useFetch";
+import "./hotel.css";
+//import { useEffect } from "react";
 
 
 const Hotel = () => {
@@ -31,33 +31,7 @@ const Hotel = () => {
   const navigate = useNavigate();
 
   const { dates, options } = useContext(SearchContext);
-  const userId =user._id;
-  const [image, setImage] = useState();
-    
-  useEffect(() => {
-
-
-    const getUserImage = async () => {
-        try {
-          const response = await fetch(`http://localhost:8800/api/users/${userId}`);
-          if (response.ok) {
-            const user = await response.json();
-            if (user.img!==""){
-
-                setImage(user.img);
-            }else{
-                setImage(null);
-            }
-            
-          } else {
-            throw new Error("Failed to fetch user image");
-          }
-        } catch (error) {
-          console.error("Error fetching user image:", error);
-        }
-      };
-      getUserImage();
-    }, [userId]);
+  
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
@@ -94,7 +68,7 @@ const Hotel = () => {
   };
   return (
     <div>
-      <Navbar image={image}/>
+      <Navbar/>
       <Header type="list" />
       {loading ? (
         "loading"
