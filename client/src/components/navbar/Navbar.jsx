@@ -1,23 +1,16 @@
-import "./navbar.css";
-import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import { Navigate } from "react-router-dom";
 import {
   faHotel,
-
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import "./navbar.css";
 
-const Navbar = ({ image }) => {
+const Navbar = () => {
   const { user,dispatch } = useContext(AuthContext);
-  const [userImage, setUserImage] = useState();
-    useEffect(() => {
-        // Retrieve image URL from local storage
-        setUserImage(user.img === "" ? (image) : (user.img));
-    }, [image,user]);
+ 
+
 
 
 
@@ -29,7 +22,7 @@ const Navbar = ({ image }) => {
   
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
-    <Navigate to ="/"/>
+    //<Navigate to ="/"/>
   };
 
   return (
@@ -42,7 +35,7 @@ const Navbar = ({ image }) => {
         {user ? (
         <div className="navItems">
           <Link to="/profile">
-          <img className="image" src={userImage || "https://i.ibb.co/MBtjqXQ/no-avatar.gif"} alt="avatar" /></Link>
+          <img className="image" src={user.img || "https://i.ibb.co/MBtjqXQ/no-avatar.gif"} alt="avatar" /></Link>
           
         
           <Link to="/profile" style={{ color: "inherit", textDecoration: "none" }}>
@@ -68,3 +61,4 @@ const Navbar = ({ image }) => {
 };
 
 export default Navbar;
+
