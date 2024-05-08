@@ -1,5 +1,4 @@
-import React from 'react';
-//import { useState } from 'react';
+//import React, { useState } from 'react';
 //import { FaStar } from 'react-icons/fa';
 import { useContext } from "react";
 import { Link } from 'react-router-dom';
@@ -8,7 +7,6 @@ import { Link } from 'react-router-dom';
 import Footer from "../../components/footer/Footer";
 import './profile.css';
 //import MainList from "../../components/mainList/MainList"
-import { useEffect, useState } from "react";
 import CurrentBookings from '../../components/currentBookings/CurrentBookings.jsx';
 import HistoryBookings from '../../components/historyBookings/HistoryBookings.jsx';
 import MailList from "../../components/mailList/MailList";
@@ -21,54 +19,14 @@ import NewReview from '../newReview/NewReview';
 
 const Profile = () => {
     // Dummy user data (replace with real data from your backend)
-    const { user} = useContext(AuthContext);
-    const userId =user._id;
-    const [image, setImage] = useState();
-    const getUserImage = async () => {
-        try {
-          const response = await fetch(`http://localhost:8800/api/users/${userId}`);
-          if (response.ok) {
-            const user = await response.json();
-            if (user.img!==""){
+    //const { user } = useContext(AuthContext);
+    const {user,dispatch} = useContext(AuthContext); // Assuming there's a updateUser function in your context to update user data
 
-                setImage(user.img);
-            }else{
-                setImage(null);
-            }
-            
-          } else {
-            throw new Error("Failed to fetch user image");
-          }
-        } catch (error) {
-          console.error("Error fetching user image:", error);
-        }
-      };
+    //const userId =user._id;
+    //const [image, setImage] = useState();
+    //const [userImage, setUserImage] = useState();
+
     
-    useEffect(() => {
-
-
-    const getUserImage = async () => {
-        try {
-          const response = await fetch(`http://localhost:8800/api/users/${userId}`);
-          if (response.ok) {
-            const user = await response.json();
-            if (user.img!==""){
-
-                setImage(user.img);
-            }else{
-                setImage(null);
-            }
-            
-          } else {
-            throw new Error("Failed to fetch user image");
-          }
-        } catch (error) {
-          console.error("Error fetching user image:", error);
-        }
-      };
-      getUserImage();
-    }, [userId]);
-      
     
 
   const handleImageChange = async (e) => {
@@ -86,9 +44,8 @@ const Profile = () => {
         if (response.ok) {
           const data = await response.json();
           updateUserImage(data.secure_url.toString()); // Call function to update user image in the database
-          user.img=data.secure_url.toString();
-         
-          
+          const updatedUser = { ...user, img: data.secure_url.toString() };
+          dispatch({ type: "LOGIN_SUCCESS", payload: updatedUser });
           
           
 
@@ -109,8 +66,6 @@ const Profile = () => {
         });
         if (response.ok) {
           console.log("User image updated successfully");
-          getUserImage();
-          
         }
       } catch (error) {
         console.error("Error updating user image:", error);
@@ -125,8 +80,8 @@ const Profile = () => {
   
           <div className="profile-header">
             <label htmlFor="image-upload" className="profile-picture">
-        <img src={image || "https://i.ibb.co/MBtjqXQ/no-avatar.gif"} alt="avatar" className="profile-picture" />
-        {!image && <h4 className="upload">Upload image</h4>}
+        <img src={user.img || "https://i.ibb.co/MBtjqXQ/no-avatar.gif"} alt="avatar" className="profile-picture" />
+        {!user.img && <h4 className="upload">Upload image</h4>}
         <input
           type="file"
           id="image-upload"
