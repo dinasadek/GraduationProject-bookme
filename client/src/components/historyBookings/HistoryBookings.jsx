@@ -1,9 +1,8 @@
 import React from 'react';
 //import { FaStar } from 'react-icons/fa'; // Import star icon from react-icons/fa
-import { AuthContext } from "../../context/AuthContext";
-import { useContext } from "react";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const HistoryBookings = () => {
     const { user} = useContext(AuthContext);
@@ -12,17 +11,17 @@ const HistoryBookings = () => {
     const [historyBookings, sethistoryBookings] = useState([]);
 
 
-
     const deleteOldDatesFromRoomAvailability = async () => {
       try {
-        const res = await axios.put('http://localhost:8800/api/rooms/deleteAvailability');
-    
-        return res.data; // Assuming the server returns a message upon successful deletion
+
+        const res = await axios.delete('http://localhost:8800/api/rooms/deleteAvailability');
+        return res.data ; // Assuming the server returns a message upon successful deletion
+        
       } catch (error) {
         console.error("Error deleting old dates from room availability:", error.message);
-        throw error;
       }
     };
+   
   
     useEffect(() => {
         const fetchcurrentBookings = async () => {
@@ -73,17 +72,21 @@ const HistoryBookings = () => {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({bookingCard:bookingCard,userId: userId})
+            body: JSON.stringify({bookingCard:bookingCard})
           });
     
-      
+          
           if (!response.ok) {
             throw new Error('Failed to add booking');
+          }else{
+            await removeCurrentBookingFromUser(bookingCard.id);
+            console.log("This booking became old:", bookingCard);
           }
           
         } catch (error) {
           console.error('Error adding booking:', error.message);
         }
+
       };
       
       const removeCurrentBookingFromUser = async ( bookingId) => {
@@ -110,23 +113,18 @@ const HistoryBookings = () => {
       };
 
 // Define a function to handle old bookings
-const handleOldBookings = () => {
+
   currentBookings.forEach(async booking => {
     if (isBookingOld(booking)) {
       await addHistoryBookingCard(booking);
-      await removeCurrentBookingFromUser(booking.id);
       await deleteOldDatesFromRoomAvailability();
-      console.log("This booking became old:", booking);
       // Perform actions for old bookings, such as removing them from display
     }
   });
-};
+
 
 // Call the function immediately to handle old bookings
-handleOldBookings();
-
-// Schedule the function to run every minute
-setInterval(handleOldBookings, 24 * 60 * 60 * 1000); // 60000 milliseconds = 1 minute
+ // 60000 milliseconds = 1 minute
 
     
 
@@ -174,5 +172,8 @@ setInterval(handleOldBookings, 24 * 60 * 60 * 1000); // 60000 milliseconds = 1 m
 };
 
 export default HistoryBookings;
+
+
+
 
 
