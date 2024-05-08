@@ -1,15 +1,12 @@
-import "./list.css";
-import Navbar from "../../components/navbar/Navbar";
-import Header from "../../components/header/Header";
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
 import { format } from "date-fns";
+import { useState } from "react";
 import { DateRange } from "react-date-range";
+import { useLocation } from "react-router-dom";
+import Header from "../../components/header/Header";
+import Navbar from "../../components/navbar/Navbar";
 import SearchItem from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch";
-import { useEffect } from "react";
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import "./list.css";
 
 const List = () => {
   const location = useLocation();
@@ -20,34 +17,8 @@ const List = () => {
   const [min, setMin] = useState(undefined);
   const [max, setMax] = useState(undefined);
 
-  const { user } = useContext(AuthContext);
-  const userId =user._id;
-  const [image, setImage] = useState();
-    
-  useEffect(() => {
-
-
-    const getUserImage = async () => {
-        try {
-          const response = await fetch(`http://localhost:8800/api/users/${userId}`);
-          if (response.ok) {
-            const user = await response.json();
-            if (user.img!==""){
-
-                setImage(user.img);
-            }else{
-                setImage(null);
-            }
-            
-          } else {
-            throw new Error("Failed to fetch user image");
-          }
-        } catch (error) {
-          console.error("Error fetching user image:", error);
-        }
-      };
-      getUserImage();
-    }, [userId]);
+ 
+  
     
 
   const { data, loading, reFetch } = useFetch(
@@ -60,7 +31,7 @@ const List = () => {
 
   return (
     <div>
-      <Navbar image={image}/>
+      <Navbar/>
       <Header type="list" />
       <div className="listContainer">
         <div className="listWrapper">
