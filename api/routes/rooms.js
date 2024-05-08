@@ -1,12 +1,12 @@
 import express from "express";
 import {
   createRoom,
+  deleteOldDatesFromRooms,
   deleteRoom,
   getRoom,
   getRooms,
   updateRoom,
-  updateRoomAvailability,
-  deleteOldDatesFromRooms
+  updateRoomAvailability
 } from "../controllers/room.js";
 import { verifyAdmin } from "../utils/verifyToken.js";
 
@@ -26,6 +26,6 @@ router.get("/:id", getRoom);
 
 router.get("/", getRooms);
 
-router.put("/deleteAvailability",deleteOldDatesFromRooms);
+router.delete("/deleteAvailability",deleteOldDatesFromRooms);
 
 export default router;
