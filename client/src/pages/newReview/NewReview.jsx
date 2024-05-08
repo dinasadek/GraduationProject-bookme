@@ -114,10 +114,11 @@ const NewReview = () => {
     e.preventDefault();
     // Ensure user.reviews is defined and accessible
     // Assuming user.reviews is an array, you can push the new review into it
-    console.log(review);
-    console.log(user.reviews);
+    if (!review.hotelName || review.rating === 0 || !review.comment) {
+      alert('Please fill in all the review fields first');
+      return;
+    }
     updateUserReviews(review);
-    console.log(user.reviews);
     // Navigate to the profile page or wherever needed
     return navigate('/profile');
   };
