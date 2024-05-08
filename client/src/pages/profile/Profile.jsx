@@ -1,37 +1,29 @@
 import React from 'react';
 //import { useState } from 'react';
 //import { FaStar } from 'react-icons/fa';
-import { Link } from 'react-router-dom'; 
 import { useContext } from "react";
+import { Link } from 'react-router-dom';
 //import { useEffect } from "react";
 
-import './profile.css';
 import Footer from "../../components/footer/Footer";
+import './profile.css';
 //import MainList from "../../components/mainList/MainList"
-import Navbar from "../../components/navbar/Navbar";
+import { useEffect, useState } from "react";
+import CurrentBookings from '../../components/currentBookings/CurrentBookings.jsx';
+import HistoryBookings from '../../components/historyBookings/HistoryBookings.jsx';
 import MailList from "../../components/mailList/MailList";
+import Navbar from "../../components/navbar/Navbar";
 import ReviewList from "../../components/reviewList/ReviewList";
 import { AuthContext } from "../../context/AuthContext";
 import NewReview from '../newReview/NewReview';
-import CurrentBookings from '../../components/currentBookings/CurrentBookings.jsx';
-import HistoryBookings from '../../components/historyBookings/HistoryBookings.jsx';
-import { useState } from "react";
-import { useEffect } from "react";
 //import useFetch from "../../hooks/useFetch";
 //import axios from "axios";
 
 const Profile = () => {
     // Dummy user data (replace with real data from your backend)
-    const { user } = useContext(AuthContext);
+    const { user} = useContext(AuthContext);
     const userId =user._id;
     const [image, setImage] = useState();
-    const [userImage, setUserImage] = useState();
-
-    useEffect(() => {
-        // Retrieve image URL from local storage
-        setUserImage(user.img === "" ? (image) : (user.img));
-    }, [image,user]);
-    
     const getUserImage = async () => {
         try {
           const response = await fetch(`http://localhost:8800/api/users/${userId}`);
@@ -94,6 +86,8 @@ const Profile = () => {
         if (response.ok) {
           const data = await response.json();
           updateUserImage(data.secure_url.toString()); // Call function to update user image in the database
+          user.img=data.secure_url.toString();
+         
           
           
           
@@ -116,6 +110,7 @@ const Profile = () => {
         if (response.ok) {
           console.log("User image updated successfully");
           getUserImage();
+          
         }
       } catch (error) {
         console.error("Error updating user image:", error);
@@ -124,13 +119,13 @@ const Profile = () => {
   
     return (
       <div>
-        <Navbar image={image}/>
+        <Navbar/>
 
         <div className="profile">
   
           <div className="profile-header">
             <label htmlFor="image-upload" className="profile-picture">
-        <img src={userImage || "https://i.ibb.co/MBtjqXQ/no-avatar.gif"} alt="avatar" className="profile-picture" />
+        <img src={image || "https://i.ibb.co/MBtjqXQ/no-avatar.gif"} alt="avatar" className="profile-picture" />
         {!image && <h4 className="upload">Upload image</h4>}
         <input
           type="file"
