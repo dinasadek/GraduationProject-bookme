@@ -1,8 +1,7 @@
 import React from 'react';
 //import { FaStar } from 'react-icons/fa'; // Import star icon from react-icons/fa
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { useContext } from "react";
-import { useEffect, useState } from "react";
 
 const CurrentBookings = () => {
     const { user} = useContext(AuthContext);
@@ -39,7 +38,7 @@ const CurrentBookings = () => {
                 </div>
                 <div>
                   <span className="booking-location">City: {booking.city}</span>{'  '}
-                  <span className="booking-status">Total Cost: ${booking.totalCost}</span>
+                  <span className="booking-status">Total Cost:${booking.totalCost}</span>
                 </div>
                 <div>
                   <span className="booking-details">Adults: {booking.numberOfAdults}</span>
@@ -48,12 +47,12 @@ const CurrentBookings = () => {
                 </div>
                 <div>
                   <span className="booking-details">Hotel: {booking.hotelName}</span>
-                  <span className="booking-details">
-                        Room Names:
+                  <span className="booking-details"><li>
+                        Room Names:</li>
                         {booking.ReservationDetails.map((detail, index) => (
                             <React.Fragment key={index}>
-                                {index > 0 && ','} {/* Add comma for all items except the first one */}
-                                {detail.selectedRoomCount} {'=>'} {detail.title}
+                                {index > 0 && <li>{', '}</li>} {/* Add comma for all items except the first one */}
+                                <li>{detail.selectedRoomsNums.join(', ')} {'=>'} {detail.roomtitle}</li>
                             </React.Fragment>
                         ))}
                   </span>
