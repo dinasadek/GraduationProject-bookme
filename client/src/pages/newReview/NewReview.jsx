@@ -1,17 +1,17 @@
 // NewReview.jsx
 import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
-import './newReview.css';
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import './newReview.css';
 //import { SearchContext } from "../../context/SearchContext";
 import { useContext } from "react";
 import { v4 as uuidv4 } from 'uuid';
 //import { AuthProvider } from './AuthContext';
 import { useEffect } from 'react';
-import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import MailList from "../../components/mailList/MailList";
+import Navbar from "../../components/navbar/Navbar";
 
 
 
@@ -29,8 +29,7 @@ const NewReview = () => {
   const { user  } = useContext(AuthContext);
 
   const [hotelNames, setHotelNames] = useState([]);
-  const userId =user._id;
-  const [image, setImage] = useState();
+  
 
   useEffect(() => {
     const fetchHotelNames = async () => {
@@ -48,29 +47,6 @@ const NewReview = () => {
 
     fetchHotelNames();
   }, []);
-    
-  useEffect(() => {
-    const getUserImage = async () => {
-        try {
-          const response = await fetch(`http://localhost:8800/api/users/${userId}`);
-          if (response.ok) {
-            const user = await response.json();
-            if (user.img!==""){
-
-                setImage(user.img);
-            }else{
-                setImage(null);
-            }
-            
-          } else {
-            throw new Error("Failed to fetch user image");
-          }
-        } catch (error) {
-          console.error("Error fetching user image:", error);
-        }
-      };
-      getUserImage();
-    }, [userId]);
     
 
 
@@ -161,7 +137,7 @@ const NewReview = () => {
 
   return (
     <div>
-    <Navbar image={image}/>
+    <Navbar/>
     <div className="new-review-container">
       <h2>Add a New Review</h2>
       <form onSubmit={handleSubmit}>
