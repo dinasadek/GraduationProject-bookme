@@ -165,10 +165,6 @@ const NewReview = () => {
         <button type="submit">Submit</button>
       </form>
     </div>
-    <div className="End_Page">
-        <MailList />
-        <Footer />
-        </div>
     </div>
   );
 };
