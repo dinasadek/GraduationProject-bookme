@@ -139,26 +139,37 @@ export const addCurrentBookingToUser = async (req, res, next) => {
   }
 };
 export const addHistoryBookingToUser = async (req, res, next) => {
-  const {userId } = req.body.userId;
-  const{bookingCard}=req.body.bookingCard;
+  const userId = req.params.id;
+  const bookingCard = req.body.bookingCard;
 
   try {
-    // Create a new booking card object
-    const newBooking = bookingCard;
+      // Find the user by ID and update their HistoryBookings array
+      let user = await User.findByIdAndUpdate(userId, {
+          $push: { HistoryBookings: bookingCard },
+      }, { new: true });
 
-    // Find the user by ID and update their currentBookings array
-    const user = await User.findByIdAndUpdate(userId, {
-      $push: { HistoryBookings: newBooking },
-    });
+      if (!user) {
+          return res.status(404).json({ error: 'User not found' });
+      }
 
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+      // Loop through the user's HistoryBookings to remove duplicate bookings
+      const uniqueHistoryBookings = [];
+      const existingIds = new Set();
 
-    res.status(200).json({ message: 'Booking added successfully', user });
+      for (const booking of user.HistoryBookings.reverse()) {
+          if (!existingIds.has(booking._id)) {
+              uniqueHistoryBookings.push(booking);
+              existingIds.add(booking._id);
+          }
+      }
+
+      // Update user's HistoryBookings array with unique bookings
+      user = await User.findByIdAndUpdate(userId, { HistoryBookings: uniqueHistoryBookings }, { new: true });
+
+      res.status(200).json({ message: 'Booking added successfully', user });
   } catch (error) {
-    console.error(error);
-    next(error);
+      console.error(error);
+      next(error);
   }
 };
 
