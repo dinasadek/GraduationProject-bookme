@@ -1,13 +1,13 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import "./reserve.css";
-import useFetch from "../../hooks/useFetch";
-import { useContext, useState } from "react";
-import { SearchContext } from "../../context/SearchContext";
 import axios from "axios";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { SearchContext } from "../../context/SearchContext";
+import useFetch from "../../hooks/useFetch";
+import "./reserve.css";
 //import { useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -135,6 +135,7 @@ const Reserve = ({ setOpen, hotelId }) => {
         let selectedRoomCount = 0;
         let roomTotalPrice = 0;
         const selectedRoomsId =[];
+        const selectedRoomsNums=[];
   
         // Iterate over each room number in the room
         for (const roomNumber of room.roomNumbers) {
@@ -142,6 +143,7 @@ const Reserve = ({ setOpen, hotelId }) => {
           if (selectedRoomNumbers.includes(roomNumber._id.toString())) {
             selectedRoomCount++;
             selectedRoomsId.push(roomNumber._id.toString());
+            selectedRoomsNums.push(roomNumber.number);
             roomTotalPrice += room.price; // Add room price to room total price
           }
         }
@@ -157,6 +159,7 @@ const Reserve = ({ setOpen, hotelId }) => {
           roomid:room._id,
           selectedRoomCount,
           selectedRoomsId:selectedRoomsId,
+          selectedRoomsNums:selectedRoomsNums,
           roomPrice: roomTotalPrice, // Update to room total price
         });
       }
@@ -205,7 +208,7 @@ const Reserve = ({ setOpen, hotelId }) => {
       
       const roomNames = await searchRoomsForHotels(hoteldata.data.rooms,selectedRooms);
       const roomsTotalPrice = (await getReservation(hoteldata.data.rooms,selectedRooms)).totalPrice;
-      const RoomDetails = (await getReservation(hoteldata.data.rooms,selectedRooms)).roomDetails.filter(room => roomNames.includes(room.title));
+      const RoomDetails = (await getReservation(hoteldata.data.rooms,selectedRooms)).roomDetails.filter(room => roomNames.includes(room.roomtitle));
   
       const bookingCard={
         id: generateCustomUUID(),
