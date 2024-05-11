@@ -130,50 +130,45 @@ const HistoryBookings = () => {
 
     
 
-    return(
-        <div className="history-bookings">
-        <h2>History Bookings</h2>
-        <ul>
-          {historyBookings.map(booking => (
-            <li key={booking.id}>
-              <div className="booking-details">
-                <div>
-                  <span className="booking-date"><strong>From: </strong>{booking.fromDate}</span>{'  '}<strong>{','}</strong>{'  '}
-                  <span className="booking-date"><strong>To: </strong> {booking.toDate}</span>
-                </div>
-                <div>
-                  <span className="booking-location">City: {booking.city}</span>{'  '}
-                  <span className="booking-status">Total Cost: ${booking.totalCost}</span>
-                </div>
-                <div>
-                  <span className="booking-details">Adults: {booking.numberOfAdults}</span>
-                  <span className="booking-details">Children: {booking.numberOfChildren}</span>
-                  <span className="booking-details">Rooms: {booking.numberOfRooms}</span>
-                </div>
-                <div>
-                  <span className="booking-details">Hotel: {booking.hotelName}</span>
-                  <span className="booking-details">
-                        Room Names:
-                        {booking.ReservationDetails.map((detail, index) => (
-                            <React.Fragment key={index}>
-                                {index > 0 && ','} {/* Add comma for all items except the first one */}
-                                {detail.selectedRoomCount} {'=>'} {detail.title}
-                            </React.Fragment>
-                        ))}
-                  </span>
+ return(
+  <div className="current-bookings">
+  <h2>History Bookings</h2>
+  <ul>
+    {historyBookings.map(booking => (
+      <li key={booking.id}>
+        <div className="booking-details">
+          <div>
+            <span className="booking-date"><strong>From: </strong>{booking.fromDate}</span>{'  '}<strong>{','}</strong>{'  '}
+            <span className="booking-date"><strong>To: </strong> {booking.toDate}</span>
+          </div>
+          <div>
+            <span className="booking-location">City: {booking.city}</span>{'  '}
+            <span className="booking-status">Total Cost:${booking.totalCost}</span>
+          </div>
+          <div>
+            <span className="booking-details">Adults: {booking.numberOfAdults}</span>
+            <span className="booking-details">Children: {booking.numberOfChildren}</span>
+            <span className="booking-details">Rooms: {booking.numberOfRooms}</span>
+          </div>
+          <div>
+            <span className="booking-details">Hotel: {booking.hotelName}</span>
+            <span className="booking-details"><li>
+                  Room Names:</li>
+                  {booking.ReservationDetails.map((detail, index) => (
+                      <React.Fragment key={index}>
+                          {index > 0 && <li>{', '}</li>} {/* Add comma for all items except the first one */}
+                          <li>{detail.selectedRoomsNums.join(', ')} {'=>'} {detail.roomtitle}</li>
+                      </React.Fragment>
+                  ))}
+            </span>
 
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
+          </div>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+);
 };
 
 export default HistoryBookings;
-
-
-
-
-
