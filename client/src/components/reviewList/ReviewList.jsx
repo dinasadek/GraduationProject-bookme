@@ -1,9 +1,10 @@
 // ReviewList.jsx
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa'; // Import star icon from react-icons/fa
+import { Link } from 'react-router-dom';
 import { AuthContext } from "../../context/AuthContext";
-import { useContext } from "react";
-import { useEffect, useState } from "react";
+import NewReview from '../../pages/newReview/NewReview.jsx';
+import "./reviewList.css";
 
 const ReviewList = () => {
   const { user} = useContext(AuthContext);
@@ -50,6 +51,9 @@ const ReviewList = () => {
         ))}
 
       </ul>
+      <Link to="/new-review">
+          <button className="Rbutton" onClick={NewReview}>Add Review</button>
+          </Link>
     </div>
   );
 };
