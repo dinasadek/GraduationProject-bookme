@@ -1,0 +1,41 @@
+.current-bookings {
+    padding: 20px;
+}
+
+.booking-details {
+    margin-bottom: 10px;
+}
+
+.booking-date,
+.booking-location,
+.booking-status,
+.booking-details {
+    margin-right: 10px;
+}
+
+.bold{
+    margin: 0;
+    padding: 0;
+}
+
+.alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+}
+.CRbutton {
+    background-color: #f63b2d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.CRbutton:hover {
+    background-color: #d32f2f;
+}
+ 
