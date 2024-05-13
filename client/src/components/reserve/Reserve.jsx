@@ -29,6 +29,8 @@ const Reserve = ({ setOpen, hotelId }) => {
   
 
   const getDatesInRange = (startDate, endDate) => {
+    
+
     const start = new Date(startDate);
     const end = new Date(endDate);
 
@@ -42,16 +44,27 @@ const Reserve = ({ setOpen, hotelId }) => {
     }
 
     return dates;
+    
   };
+
+  //if (dates[0].startDate===null && dates[0].endDate===null){
+    //dates[0].startDate = dates[0].endDate = new Date.now();
+
+  //}
+ 
 
   const alldates = getDatesInRange(dates[0].startDate, dates[0].endDate);
 
   const isAvailable = (roomNumber) => {
     const isFound = roomNumber.unavailableDates.some((date) =>
-      alldates.includes(new Date(date).getTime())
+      
+      alldates.includes(new Date(date).getTime()) 
+      
     );
 
-    return !isFound;
+
+
+    return !isFound ;
   };
 
   const handleSelect = (e) => {
@@ -247,6 +260,12 @@ const Reserve = ({ setOpen, hotelId }) => {
 
   const handleClick = async () => {
     try {
+
+      if (selectedRooms.length === 0) {
+        alert("Please select the rooms before reserving.");
+        return; // Exit the function if no rooms are selected
+      }
+
       await Promise.all(
         selectedRooms.map((roomId) => {
           const res = axios.put(`/rooms/availability/${roomId}`, {
