@@ -3,6 +3,7 @@ import React from 'react';
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import "./historyBookings.css";
 
 const HistoryBookings = () => {
     const { user} = useContext(AuthContext);
