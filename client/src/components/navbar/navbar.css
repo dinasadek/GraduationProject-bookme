@@ -24,7 +24,8 @@
     border: none;
     padding: 5px 10px;
     cursor: pointer;
-    color: #2196f3;
+    color: white;
+    background-color:#046fc7;
   }
 
   .image {
