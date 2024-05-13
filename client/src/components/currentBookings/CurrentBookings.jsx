@@ -42,7 +42,8 @@ const CurrentBookings = () => {
           const errorMessage = await response.text();
           throw new Error(errorMessage || 'Failed to remove booking');
         }
-    
+
+        console.log('Booking removed successfully');
         return await response.json();
         
       } catch (error) {
