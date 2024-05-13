@@ -1,21 +1,20 @@
 import express from "express";
 import {
-  updateUser,
+  addCurrentBookingToUser,
+  addHistoryBookingToUser,
+  addReviewToUser,
+  createUsers,
   deleteUser,
   getUser,
-  getUsers,
-  createUsers,
-  removeCurrentBookingFromUser,
-  getUserHistoryBokings,
-  addHistoryBookingToUser,
-  getUserCurrentBokings,
-  addCurrentBookingToUser,
+  getUserCurrentBookings,
+  getUserHistoryBookings,
   getUserReviews,
-  addReviewToUser
+  getUsers,
+  removeCurrentBookingFromUser,
+  updateUser
 } from "../controllers/user.js";
 
-import User from "../models/User.js";
-import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js";
+import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
 //const user = require("../models/User.js")
 const router = express.Router();
 
@@ -55,10 +54,10 @@ router.get('/:id/reviews', getUserReviews);
 
 router.post("/:id/currentbookings",addCurrentBookingToUser);
 router.delete("/:id/currentbookings",removeCurrentBookingFromUser);
-router.get('/:id/currentBookings', getUserCurrentBokings);
+router.get('/:id/currentBookings', getUserCurrentBookings);
 
 router.post("/:id/historybookings",addHistoryBookingToUser);
-router.get("/:id/historybookings",getUserHistoryBokings);
+router.get("/:id/historybookings",getUserHistoryBookings);
 
 
 export default router;
