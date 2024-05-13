@@ -1,7 +1,6 @@
 //import React, { useState } from 'react';
 //import { FaStar } from 'react-icons/fa';
 import { useContext } from "react";
-import { Link } from 'react-router-dom';
 //import { useEffect } from "react";
 
 import Footer from "../../components/footer/Footer";
@@ -13,7 +12,6 @@ import MailList from "../../components/mailList/MailList";
 import Navbar from "../../components/navbar/Navbar";
 import ReviewList from "../../components/reviewList/ReviewList";
 import { AuthContext } from "../../context/AuthContext";
-import NewReview from '../newReview/NewReview';
 //import useFetch from "../../hooks/useFetch";
 //import axios from "axios";
 
@@ -97,10 +95,6 @@ const Profile = () => {
           <CurrentBookings />
           <HistoryBookings/>
           <ReviewList />
-
-          <Link to="/new-review">
-          <button onClick={NewReview}>Add a review</button>
-          </Link>
           
         </div>
         <div className="End_Page">
