@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createRoom,
+  deleteDatesFromRooms,
   deleteOldDatesFromRooms,
   deleteRoom,
   getRoom,
@@ -26,6 +27,9 @@ router.get("/:id", getRoom);
 
 router.get("/", getRooms);
 
-router.delete("/deleteAvailability",deleteOldDatesFromRooms);
+router.delete("/deleteoldAvailability",deleteOldDatesFromRooms);
+router.delete("/deletecanceledAvailability",deleteDatesFromRooms);
+
+export default router;
 
 export default router;
