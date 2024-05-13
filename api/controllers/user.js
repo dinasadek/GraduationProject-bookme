@@ -94,7 +94,7 @@ export const getUserReviews = async (req, res, next) => {
   }
 };
 
-export const getUserCurrentBokings = async (req, res, next) => {
+export const getUserCurrentBookings = async (req, res, next) => {
   try {
     // Find the user by ID
     const user = await User.findById(req.params.id);
@@ -173,7 +173,7 @@ export const addHistoryBookingToUser = async (req, res, next) => {
   }
 };
 
-export const getUserHistoryBokings = async (req, res, next) => {
+export const getUserHistoryBookings = async (req, res, next) => {
   try {
     // Find the user by ID
     const user = await User.findById(req.params.id);
@@ -196,22 +196,23 @@ export const getUserHistoryBokings = async (req, res, next) => {
 
 export const removeCurrentBookingFromUser = async (req, res, next) => {
   const userId = req.params.id;
-  const { bookingId }= req.body.bookingId;
+  const { bookingId } = req.body; // Remove object destructuring from body
 
   try {
     // Find the user by ID and update their CurrentBookings array
-    const user = await User.findByIdAndUpdate(userId, {
-      $pull: { CurrentBookings: { id: bookingId } }, // Remove the booking with matching ID
-    });
+    const user = await User.findOneAndUpdate(
+      { _id: userId, 'CurrentBookings.id': bookingId }, // Find user by ID and bookingId
+      { $pull: { CurrentBookings: { id: bookingId } } }, // Remove the booking with matching ID
+      { new: true } // Return the updated document
+    );
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'User or booking not found' });
     }
 
-    res.status(200).json({ message: 'Booking removed successfully' });
+    res.status(200).json({ message: 'Booking removed successfully'}); // Return bookingId in response
   } catch (error) {
     console.error(error);
     next(error);
   }
 };
-
