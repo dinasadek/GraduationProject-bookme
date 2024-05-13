@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import "./currentBookings.css";
 
 const CurrentBookings = () => {
     const { user } = useContext(AuthContext);
@@ -75,7 +76,7 @@ const CurrentBookings = () => {
 
         setCurrentBookings((prevBookings) => prevBookings.filter((prevBooking) => prevBooking.id !== booking.id));
         setShowAlert(true); // Show alert after booking cancellation
-        setTimeout(() => setShowAlert(false), 3000); // Hide alert after 3 seconds
+        setTimeout(() => setShowAlert(false), 2000); // Hide alert after 2 seconds
     };
 
     useEffect(() => {
@@ -129,14 +130,14 @@ const CurrentBookings = () => {
                                     Room Names:{' '}
                                     {booking.ReservationDetails.map((detail, index) => (
                                         <React.Fragment key={index}>
-                                            {index > 0 && <b>, </b>}
+                                            {index > 0 && <b className="bold">, </b>}
                                             {detail.selectedRoomsNums.join(', ')} =&gt; {detail.roomtitle}
                                         </React.Fragment>
                                     ))}
                                 </span>
                                 <br />
                                 <span>
-                                    <button onClick={() => handleDeleteBooking(booking)}>Cancel Reservation</button>
+                                    <button className='CRbutton' onClick={() => handleDeleteBooking(booking)}>Cancel Reservation</button>
                                 </span>
                             </div>
                         </div>
