@@ -1,26 +1,24 @@
 import {
   faBed,
   faCalendarDays,
-  faCar,
-  faPerson,
-  faPlane,
-  faTaxi,
-  faHome,
   faDollar,
   faFileInvoice,
-  faPhone,
-
+  faHome,
+  faPerson,
+  faPhone
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./header.css";
-import { DateRange } from "react-date-range";
+import { format } from "date-fns";
 import { useContext, useState } from "react";
+//import { Link } from "react-router-dom";
+import React from "react";
+import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
-import { SearchContext } from "../../context/SearchContext";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { SearchContext } from "../../context/SearchContext";
+import "./header.css";
 
 const Header = ({ type }) => {
   const [destination, setDestination] = useState("");
@@ -38,6 +36,8 @@ const Header = ({ type }) => {
     children: 0,
     room: 1,
   });
+
+  const [activeItem, setActiveItem] = useState("Home"); // State to track active item
 
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
@@ -58,6 +58,33 @@ const Header = ({ type }) => {
     dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
     navigate("/hotels", { state: { destination, dates, options } });
   };
+  
+  const location = useLocation();
+  React.useEffect(() => {
+    switch (location.pathname) {
+      case "/":
+        setActiveItem("Home");
+        break;
+      case "/offers":
+        setActiveItem("Offers");
+        break;
+      case "/plans":
+        setActiveItem("Plans");
+        break;
+      case "/rooms":
+        setActiveItem("Rooms");
+        break;
+      case "/contact":
+        setActiveItem("Contact");
+        break;
+      default:
+        setActiveItem("Home");
+    }
+  }, [location.pathname]);
+
+  // Function to handle navigation and set active item
+  
+  
 
   return (
     <div className="header">
@@ -67,23 +94,71 @@ const Header = ({ type }) => {
         }
       >
         <div className="headerList">
-          <div className="headerListItem active">
+          <div
+            className={
+              activeItem === "Home" ? "headerListItem active" : "headerListItem"
+            }
+            onClick={() => {
+              setActiveItem("Home");
+              navigate("/");
+            }}
+          >
             <FontAwesomeIcon icon={faHome} />
             <span>Home</span>
           </div>
-          <div className="headerListItem">
+          <div
+            className={
+              activeItem === "Offers"
+                ? "headerListItem active"
+                : "headerListItem"
+            }
+            onClick={() => {
+              setActiveItem("Offers");
+              //navigate("/offers");
+            }}
+          >
             <FontAwesomeIcon icon={faDollar} />
             <span>Offers & Inspiration</span>
           </div>
-          <div className="headerListItem">
+          <div
+            className={
+              activeItem === "Plans"
+                ? "headerListItem active"
+                : "headerListItem"
+            }
+            onClick={() => {
+              setActiveItem("Plans");
+              //navigate("/plans");
+            }}
+          >
             <FontAwesomeIcon icon={faFileInvoice} />
             <span>Plans</span>
           </div>
-          <div className="headerListItem">
+          <div
+            className={
+              activeItem === "Rooms"
+                ? "headerListItem active"
+                : "headerListItem"
+            }
+            onClick={() => {
+              setActiveItem("Rooms");
+              //navigate("/rooms");
+            }}
+          >
             <FontAwesomeIcon icon={faBed} />
             <span>Rooms</span>
           </div>
-          <div className="headerListItem">
+          <div
+            className={
+              activeItem === "Contact"
+                ? "headerListItem active"
+                : "headerListItem"
+            }
+            onClick={() => {
+              setActiveItem("Contact");
+              //navigate("/contact");
+            }}
+          >
             <FontAwesomeIcon icon={faPhone} />
             <span>Contact</span>
           </div>
