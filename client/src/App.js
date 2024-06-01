@@ -10,6 +10,8 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/register.jsx";
 import Profile from "./pages/profile/Profile";
 import NewReview from "./pages/newReview/NewReview.jsx";
+import Offers from "./pages/offers/Offers";
+
 
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
         <Route path="/register" element={<Register/>}/>
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/new-review" element={<NewReview/>}/>
+        <Route path="/offers" element={<Offers/>} />
 
       </Routes>
     </BrowserRouter>

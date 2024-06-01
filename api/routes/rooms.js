@@ -30,6 +30,6 @@ router.get("/", getRooms);
 router.delete("/deleteoldAvailability",deleteOldDatesFromRooms);
 router.delete("/deletecanceledAvailability",deleteDatesFromRooms);
 
-export default router;
+
 
 export default router;

@@ -1,0 +1,227 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  } 
+  
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+  }
+  
+  .slick-prev,
+  .slick-next {
+    color: #fff;
+    font-size: 32px;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .slick-prev {
+    left: 10px;
+  }
+  
+  .slick-next {
+    right: 10px;
+  }
+  
+  .slick-prev:before,
+  .slick-next:before {
+    content: '';
+  }
+  
+  .card {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    margin: 0 10px;
+  }
+  
+  .offer-title,
+  .city-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .offer-brief,
+  .city-details {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  
+  .offer-details {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .availability-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .availability-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .city-slider,
+  .offer-details-slider {
+    margin-top: 40px;
+  }
+  
+  .offer-content {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f9f9f9;
+    margin-bottom: 10px;
+  }
+  
+  
+  
+  .offer-advertise {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .price-before {
+    text-decoration: line-through;
+    color: red;
+  }
+  
+  .price-after {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .percentage-saving {
+    color: blue;
+    font-weight: bold;
+  }
+  
+  .offer-duration {
+    color: #555;
+    font-style: italic;
+  }
+  
+  
+  
+  .book-now-button:hover {
+    background-color: #0056b3;
+  }
+  
+  
+  /* Styles for the input container */
+  .input-container {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .input-container.adults-input {
+    margin-top: 110px; /* Adjust this value as needed */
+  }
+  
+  .input-container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .input-container input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+  }
+  
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+  
+  .react-datepicker__input-container {
+    display: flex;
+  }
+  
+  .react-datepicker__input-container input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+  }
+  
+  .slick-arrow.slick-prev,
+  .slick-arrow.slick-next {
+    background-color: #ddd;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .slick-arrow.slick-prev:hover,
+  .slick-arrow.slick-next:hover {
+    background-color: #bbb;
+  }
+  /* Additional styling for the book-now button */
+  .book-now-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  
+  .book-now-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .rOfferNote {
+    font-size: 0.9em;
+    color: #00bfff;
+    margin-top: 5px;
+    font-style: italic;
+  }
+  
+  .End_Page{
+    margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  }
+  
+  
+  
+  
+  
+  
+  

@@ -114,7 +114,7 @@ const Header = ({ type }) => {
             }
             onClick={() => {
               setActiveItem("Offers");
-              //navigate("/offers");
+              navigate("/offers");
             }}
           >
             <FontAwesomeIcon icon={faDollar} />

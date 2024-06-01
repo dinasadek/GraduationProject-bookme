@@ -105,3 +105,42 @@ export const getHotelNames = async (req, res, next) => {
     next(err);
   }
 };
+
+// Fetch all rooms with offers and the hotel name
+export const getRoomsWithOffers = async (req, res, next) => {
+  try {
+    const hotels = await Hotel.find().populate("rooms");
+    const roomsWithOffers = [];
+
+    for (const hotel of hotels) {
+      for (const roomId of hotel.rooms) {
+        try {
+          const room = await Room.findById(roomId);
+          if (room && room.offers && room.offers.length > 0) {
+            roomsWithOffers.push({
+              hotelId: hotel._id,
+              hotelName: hotel.name,
+              hotelPhotos:hotel.photos,
+              hotelAddress:hotel.address,
+              hotelDistance:hotel.distance,
+              hotelCheapestPrice:hotel.cheapestPrice,
+              hotelCity:hotel.city,
+              roomTitle:room.title,
+              offerKind:hotel.offers[0].offerKind,
+              ...room._doc
+            });
+          }
+        } catch (error) {
+          console.error(`Error fetching room with ID ${roomId}:`, error);
+        }
+      }
+    }
+
+    res.status(200).json(roomsWithOffers);
+  } catch (error) {
+    console.error("Error fetching rooms with offers:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+
