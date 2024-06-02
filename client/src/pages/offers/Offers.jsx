@@ -51,6 +51,16 @@ const HolidayOffers = () => {
   const navigate = useNavigate();
   const { dispatch } = useContext(SearchContext);
 
+  const [showNoOffers, setShowNoOffers] = useState({
+    summer: false,
+    winter: false,
+    spring: false,
+    autumn: false,
+    aidAlFitr: false,
+    aidAlAdha: false,
+    weekend: false
+  });
+
   // const navigate = useNavigate();
   // const dispatch = useDispatch();
 
@@ -263,7 +273,7 @@ const HolidayOffers = () => {
 
   useEffect(() => {
     if (cityOffers.length > 0) {
-      setCardStates(cityOffers.flatMap(cityOffer => 
+      setCardStates(cityOffers.flatMap(cityOffer =>
         cityOffer.hotels.map(hotel => ({
           hotelId: hotel.hotelId,
           openDate: false,
@@ -281,17 +291,23 @@ const HolidayOffers = () => {
   }, [cityOffers]);
 
   const handleCardStateChange = (hotelId, newState) => {
-    setCardStates(prevStates => prevStates.map(state => 
-      state.hotelId === hotelId ? { ...state, ...newState } : state
-    ));
+    setCardStates(prevStates =>
+      prevStates.map(state =>
+        state.hotelId === hotelId ? { ...state, ...newState } : state
+      )
+    );
   };
 
 
  
 
-  const handleShowOffersClick = (cities) => {
+  const handleShowOffersClick = (cities,season) => {
+    if (cities.length === 0) {
+      setShowNoOffers(prevState => ({ ...prevState, [season]: true }));
+    }else{
     setSelectedOffer(cities);
     setSelectedCity(null);
+    }
   };
 
   const handleShowCityOffersClick = (city) => {
@@ -325,6 +341,10 @@ const HolidayOffers = () => {
   //   navigate(`/hotels/${offer.hotel_id}`);
   // };
 
+  // const showOfers =() =>{
+  //   return <p>no offers</p>
+  // }
+
 
 
   return (
@@ -336,82 +356,92 @@ const HolidayOffers = () => {
       <h2>Holiday Offers</h2>
       <p>Celebrate and save, what a great opportunity!</p>
       <Slider {...sliderSettings}>
-        {[
-          {
-            title: 'Summer Offers',
-            brief: 'Enjoy the summer with our special offers!',
-            details: 'Get amazing discounts on beach resorts and more.',
-            onClick: () => handleShowOffersClick(summerOfferCities),
-          },
-          {
-            title: 'Winter Offers',
-            brief: 'Warm up with our winter deals!',
-            details: 'Special prices on ski resorts and cozy cabins.',
-            onClick: () => handleShowOffersClick(winterOfferCities),
-          },
-          {
-            title: 'Spring Offers',
-            brief: 'Bloom with our spring deals!',
-            details: 'Special discounts on garden resorts and more.',
-            onClick: () => handleShowOffersClick(springOfferCities),
-          },
-          {
-            title: 'Autumn Offers',
-            brief: 'Fall into savings with our autumn deals!',
-            details: 'Enjoy great prices on forest retreats and more.',
-            onClick: () => handleShowOffersClick(autumnOfferCities),
-          },
-          {
-            title: 'Aid al-Fitr Offers',
-            brief: 'Celebrate Aid al-Fitr with our special offers!',
-            details: 'Exclusive deals for a joyful celebration.',
-            onClick: () => handleShowOffersClick(aidAlFitrOfferCities),
-          },
-          {
-            title: 'Aid al-Adha Offers',
-            brief: 'Celebrate Aid al-Adha with our special offers!',
-            details: 'Exclusive deals for a joyful celebration.',
-            onClick: () => handleShowOffersClick(aidAlAdhaOfferCities),
-          },
-          {
-            title: 'Weekend Offers',
-            brief: 'Enjoy your weekends with our special offers!',
-            details: 'Get the best prices for weekend getaways.',
-            onClick: () => handleShowOffersClick(weekendOfferCities),
-          }
-        ].map((offer, index) => (
-          <div key={index} className="card">
-            <h3 className="offer-title">{offer.title}</h3>
-            <p className="offer-brief">{offer.brief}</p>
-            <p className="offer-details">{offer.details}</p>
-            {(() => {
-              if (offer.title === 'Summer Offers' && summerOfferCities.length === 0) {
-                return <p style={{ color: 'red', fontWeight: 'bold' }}>No summer offers available</p>;
-              } else if (offer.title === 'Winter Offers' && winterOfferCities.length === 0) {
-                return <p style={{ color: 'red', fontWeight: 'bold' }}>No winter offers available</p>;
-              }else if (offer.title === 'Spring Offers' && springOfferCities.length === 0) {
-                return <p style={{ color: 'red', fontWeight: 'bold' }}>No Spring offers available</p>;
-              }else if (offer.title === 'Autumn Offers' && autumnOfferCities.length === 0) {
-                return <p style={{ color: 'red', fontWeight: 'bold' }}>No Autumn offers available</p>;
-              }else if (offer.title === 'Aid al-Fitr Offers' && aidAlFitrOfferCities.length === 0) {
-                return <p style={{ color: 'red', fontWeight: 'bold' }}>No Aid al-Fitr offers available</p>;
-              }else if (offer.title === 'Aid al-Adha Offers' && aidAlAdhaOfferCities.length === 0) {
-                return <p style={{ color: 'red', fontWeight: 'bold' }}>No Aid al-Adha offers available</p>;
-              }else if (offer.title === 'Weekend Offers' && weekendOfferCities.length === 0) {
-                return <p style={{ color: 'red', fontWeight: 'bold' }}>no Weekend offers available</p>;
-              } else {
-                return (
-                  <button className="availability-button" onClick={offer.onClick}>Show Offers</button>
-                );
-              }
-           })()}
-
-
-
-            {/* <button className="availability-button" onClick={offer.onClick}>Show Offers</button> */}
-          </div>
-        ))}
-      </Slider>
+          {[
+            {
+              title: 'Summer Offers',
+              brief: 'Enjoy the summer with our special offers!',
+              details: 'Get amazing discounts on beach resorts and more.',
+              onClick: () => handleShowOffersClick(summerOfferCities, 'summer'),
+            },
+            {
+              title: 'Winter Offers',
+              brief: 'Warm up with our winter deals!',
+              details: 'Special prices on ski resorts and cozy cabins.',
+              onClick: () => handleShowOffersClick(winterOfferCities, 'winter'),
+            },
+            {
+              title: 'Spring Offers',
+              brief: 'Bloom with our spring deals!',
+              details: 'Special discounts on garden resorts and more.',
+              onClick: () => handleShowOffersClick(springOfferCities, 'spring'),
+            },
+            {
+              title: 'Autumn Offers',
+              brief: 'Fall into savings with our autumn deals!',
+              details: 'Enjoy great prices on forest retreats and more.',
+              onClick: () => handleShowOffersClick(autumnOfferCities, 'autumn'),
+            },
+            {
+              title: 'Aid al-Fitr Offers',
+              brief: 'Celebrate Aid al-Fitr with our special offers!',
+              details: 'Exclusive deals for a joyful celebration.',
+              onClick: () => handleShowOffersClick(aidAlFitrOfferCities, 'aidAlFitr'),
+            },
+            {
+              title: 'Aid al-Adha Offers',
+              brief: 'Celebrate Aid al-Adha with our special offers!',
+              details: 'Exclusive deals for a joyful celebration.',
+              onClick: () => handleShowOffersClick(aidAlAdhaOfferCities, 'aidAlAdha'),
+            },
+            {
+              title: 'Weekend Offers',
+              brief: 'Enjoy your weekends with our special offers!',
+              details: 'Get the best prices for weekend getaways.',
+              onClick: () => handleShowOffersClick(weekendOfferCities, 'weekend'),
+            }
+          ].map((offer, index) => (
+            <div key={index} className="card">
+              <h3 className="offer-title">{offer.title}</h3>
+              <p className="offer-brief">{offer.brief}</p>
+              <p className="offer-details">{offer.details}</p>
+              {(() => {
+                if (offer.title === 'Summer Offers' && summerOfferCities.length === 0) {
+                  return showNoOffers.summer
+                    ? <p style={{ color: 'red', fontWeight: 'bold' }}>No summer offers available</p>
+                    : <button className="availability-button" onClick={offer.onClick}>Show Offers</button>;
+                } else if (offer.title === 'Winter Offers' && winterOfferCities.length === 0) {
+                  return showNoOffers.winter
+                    ? <p style={{ color: 'red', fontWeight: 'bold' }}>No winter offers available</p>
+                    : <button className="availability-button" onClick={offer.onClick}>Show Offers</button>;
+                } else if (offer.title === 'Spring Offers' && springOfferCities.length === 0) {
+                  return showNoOffers.spring
+                    ? <p style={{ color: 'red', fontWeight: 'bold' }}>No spring offers available</p>
+                    : <button className="availability-button" onClick={offer.onClick}>Show Offers</button>;
+                } else if (offer.title === 'Autumn Offers' && autumnOfferCities.length === 0) {
+                  return showNoOffers.autumn
+                    ? <p style={{ color: 'red', fontWeight: 'bold' }}>No autumn offers available</p>
+                    : <button className="availability-button" onClick={offer.onClick}>Show Offers</button>;
+                } else if (offer.title === 'Aid al-Fitr Offers' && aidAlFitrOfferCities.length === 0) {
+                  return showNoOffers.aidAlFitr
+                    ? <p style={{ color: 'red', fontWeight: 'bold' }}>No Aid al-Fitr offers available</p>
+                    : <button className="availability-button" onClick={offer.onClick}>Show Offers</button>;
+                } else if (offer.title === 'Aid al-Adha Offers' && aidAlAdhaOfferCities.length === 0) {
+                  return showNoOffers.aidAlAdha
+                    ? <p style={{ color: 'red', fontWeight: 'bold' }}>No Aid al-Adha offers available</p>
+                    : <button className="availability-button" onClick={offer.onClick}>Show Offers</button>;
+                } else if (offer.title === 'Weekend Offers' && weekendOfferCities.length === 0) {
+                  return showNoOffers.weekend
+                    ? <p style={{ color: 'red', fontWeight: 'bold' }}>No weekend offers available</p>
+                    : <button className="availability-button" onClick={offer.onClick}>Show Offers</button>;
+                } else {
+                  return (
+                    <button className="availability-button" onClick={offer.onClick}>Show Offers</button>
+                  );
+                }
+              })()}
+            </div>
+          ))}
+        </Slider>
       {selectedOffer && !selectedCity && (
         <div className="city-slider">
           <h3>Available Cities</h3>
@@ -429,104 +459,97 @@ const HolidayOffers = () => {
         <div className="offer-details-slider">
           <h3>{selectedCity.city} - Available Offers</h3>
           <Slider {...sliderSettings}>
-            {selectedCity.hotels.map((hotel) => {
-              // Check if hotel is already displayed
-              // if (displayedHotels.includes(hotel.hotelId)) {
-              //    return null; // Skip this hotel
-              // }
-              //  // Add hotel to displayed hotels
-              // setDisplayedHotels(prevDisplayedHotels => [...prevDisplayedHotels, hotel.hotelId]);
-        
-              console.log("Rendering hotel:", hotel.hotelName, hotel.hotelId);
-              const cardState = cardStates.find(state => state.hotelId === hotel.hotelId) || {
-                hotelId: hotel.hotelId,
-                openDate: false,
-                dates: [{
-                  startDate: new Date(),
-                  endDate: new Date(),
-                  key: "selection",
-                }],
-                adults: 1,
-                children: 0,
-                rooms: 1,
-              };
-              return (
-                <div key={hotel.hotelId} className="card">
-                  <h3 className="offer-title">{hotel.hotelName}</h3>
-                  {hotel.offers.map((offer, offerIndex) => (
-                    <div key={offerIndex} className="offer-content">
-                      <h4 className="offer-header">{offer.title}</h4>
-                      <p className="offer-advertise">
-                        <strong>Enjoy an amazing deal!</strong><br />
-                        <span className="room-title">the offer is on room: {hotel.roomTitle}</span><br />
-                        <span className="price-before">Was: ${offer.priceBefore}</span><br />
-                        <span className="price-after">Now: ${offer.priceAfter}</span><br />
-                        <span className="percentage-saving">Save: {offer.percentageSaving}%</span><br />
-                        <span className="offer-duration">
-                          Offer valid from {new Date(offer.from).toLocaleDateString()} to {new Date(offer.to).toLocaleDateString()}
-                        </span><br/>
-                        <span className="rOfferNote">Note: If selected dates fall outside the offer period, the additional days will be charged at the original room price.</span>
-                      </p>
-                      <div className="input-container">
-                        <label>Check-in Date:</label>
-                        <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
-                        <span
-                          onClick={() => handleCardStateChange(hotel.hotelId, { openDate: !cardState.openDate })}
-                          className="headerSearchText"
-                        >{`${format(cardState.dates[0].startDate, "MM/dd/yyyy")} to ${format(cardState.dates[0].endDate, "MM/dd/yyyy")}`}</span>
-                        {cardState.openDate && (
-                          <DateRange
-                            editableDateInputs={true}
-                            onChange={(item) => handleCardStateChange(hotel.hotelId, { dates: [item.selection] })}
-                            moveRangeOnFirstSelection={false}
-                            ranges={cardState.dates}
-                            className="date"
-                            minDate={new Date()}
-                          />
-                        )}
-                      </div>
-                      <div className="input-container adults-input">
-                        <label>Number of Adults:</label>
-                        <input
-                          type="number"
-                          value={cardState.adults}
-                          onChange={e => handleCardStateChange(hotel.hotelId, { adults: parseInt(e.target.value) })}
-                          min="1"
-                          placeholder="Enter number of adults"
+          {selectedCity.hotels.map((hotel) => {
+            console.log("Rendering hotel:", hotel.hotelName, hotel.hotelId);
+            const cardState = cardStates.find(state => state.hotelId === hotel.hotelId) || {
+              hotelId: hotel.hotelId,
+              openDate: false,
+              dates: [{
+                startDate: new Date(),
+                endDate: new Date(),
+                key: "selection",
+              }],
+              adults: 1,
+              children: 0,
+              rooms: 1,
+            };
+            return (
+              <div key={hotel.hotelId} className="card">
+                <h3 className="offer-title">{hotel.hotelName}</h3>
+                {hotel.offers.map((offer, offerIndex) => (
+                  <div key={offerIndex} className="offer-content">
+                    <h4 className="offer-header">{offer.title}</h4>
+                    <p className="offer-advertise">
+                      <strong>Enjoy an amazing deal!</strong><br />
+                      <span className="room-title">The offer is on room: {hotel.roomTitle}</span><br />
+                      <span className="price-before">Was: ${offer.priceBefore}</span><br />
+                      <span className="price-after">Now: ${offer.priceAfter}</span><br />
+                      <span className="percentage-saving">Save: {offer.percentageSaving}%</span><br />
+                      <span className="offer-duration">
+                        Offer valid from {new Date(offer.from).toLocaleDateString()} to {new Date(offer.to).toLocaleDateString()}
+                      </span><br/>
+                      <span className="rOfferNote">Note: If selected dates fall outside the offer period, the additional days will be charged at the original room price.</span>
+                    </p>
+                    <div className="input-container">
+                      <label>Check-in Date:</label>
+                      <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
+                      <span
+                        onClick={() => handleCardStateChange(hotel.hotelId, { openDate: !cardState.openDate })}
+                        className="headerSearchText"
+                      >{`${format(cardState.dates[0].startDate, "MM/dd/yyyy")} to ${format(cardState.dates[0].endDate, "MM/dd/yyyy")}`}</span>
+                      {cardState.openDate && (
+                        <DateRange
+                          editableDateInputs={true}
+                          onChange={(item) => handleCardStateChange(hotel.hotelId, { dates: [item.selection] })}
+                          moveRangeOnFirstSelection={false}
+                          ranges={cardState.dates}
+                          className="date"
+                          minDate={new Date()}
                         />
-                      </div>
-                      <div className="input-container">
-                        <label>Number of Children:</label>
-                        <input
-                          type="number"
-                          value={cardState.children}
-                          onChange={e => handleCardStateChange(hotel.hotelId, { children: parseInt(e.target.value) })}
-                          min="0"
-                          placeholder="Enter number of children"
-                        />
-                      </div>
-                      <div className="input-container">
-                        <label>Number of Rooms:</label>
-                        <input
-                          type="number"
-                          value={cardState.rooms}
-                          onChange={e => handleCardStateChange(hotel.hotelId, { rooms: parseInt(e.target.value) })}
-                          min="1"
-                          placeholder="Enter number of rooms"
-                        />
-                      </div>
-                      <button
-                        className="availability-button"
-                        onClick={() => handleSearch(hotel.hotelCity, cardState.dates, { adults: cardState.adults, children: cardState.children, room: cardState.rooms }, hotel)}
-                      >
-                        Book Now
-                      </button>
+                      )}
                     </div>
-                  ))}
-                </div>
-              );
-            })}
-          </Slider>
+                    <div className="input-container adults-input">
+                      <label>Number of Adults:</label>
+                      <input
+                        type="number"
+                        value={cardState.adults}
+                        onChange={e => handleCardStateChange(hotel.hotelId, { adults: parseInt(e.target.value) })}
+                        min="1"
+                        placeholder="Enter number of adults"
+                      />
+                    </div>
+                    <div className="input-container">
+                      <label>Number of Children:</label>
+                      <input
+                        type="number"
+                        value={cardState.children}
+                        onChange={e => handleCardStateChange(hotel.hotelId, { children: parseInt(e.target.value) })}
+                        min="0"
+                        placeholder="Enter number of children"
+                      />
+                    </div>
+                    <div className="input-container">
+                      <label>Number of Rooms:</label>
+                      <input
+                        type="number"
+                        value={cardState.rooms}
+                        onChange={e => handleCardStateChange(hotel.hotelId, { rooms: parseInt(e.target.value) })}
+                        min="1"
+                        placeholder="Enter number of rooms"
+                      />
+                    </div>
+                    <button
+                      className="availability-button"
+                      onClick={() => handleSearch(hotel.hotelCity, cardState.dates, { adults: cardState.adults, children: cardState.children, room: cardState.rooms }, hotel)}
+                    >
+                      Book Now
+                    </button>
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </Slider>
         </div>
       )}
       
@@ -538,3 +561,7 @@ const HolidayOffers = () => {
   );
 };
 export default HolidayOffers;
+
+
+
+

@@ -156,7 +156,7 @@ const Header = ({ type }) => {
             }
             onClick={() => {
               setActiveItem("Contact");
-              //navigate("/contact");
+              navigate("/contact");
             }}
           >
             <FontAwesomeIcon icon={faPhone} />
