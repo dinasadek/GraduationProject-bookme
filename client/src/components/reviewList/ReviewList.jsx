@@ -7,11 +7,28 @@ import NewReview from '../../pages/newReview/NewReview.jsx';
 import "./reviewList.css";
 
 const ReviewList = () => {
-  const { user} = useContext(AuthContext);
-  
-  const userId =user._id;
+  const { user } = useContext(AuthContext);
+  const userId = user._id;
   const [userReviews, setUserReviews] = useState([]);
-  
+  const [historyBookings, setHistoryBookings] = useState([]);
+
+  useEffect(() => {
+    const fetchHistoryBookings = async () => {
+      try {
+        const response = await fetch(`http://localhost:8800/api/users/${userId}/historyBookings`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch current bookings");
+        }
+        const data = await response.json();
+        setHistoryBookings(data);
+      } catch (error) {
+        console.error("Error fetching current bookings:", error.message);
+      }
+    };
+
+    fetchHistoryBookings();
+  }, [userId]);
+
   useEffect(() => {
     const fetchUserReviews = async () => {
       try {
@@ -25,17 +42,17 @@ const ReviewList = () => {
         console.error("Error fetching user reviews:", error.message);
       }
     };
-  
+
     fetchUserReviews();
   }, [userId]);
 
   return (
     <div className="review_list">
       <h2>Reviews</h2>
-      <br></br>
+      <br />
       <ul>
         {userReviews.map(review => (
-          <li key={review.userId}>
+          <li key={review._id}>
             <div>
               <span>{review.date}</span>{'                                                                              '}
               <div className="rating">
@@ -46,14 +63,19 @@ const ReviewList = () => {
             </div>
             <p>Hotel: {review.hotelName}</p>
             <p>{review.comment}</p>
-            <br></br>
+            <br />
           </li>
         ))}
-
       </ul>
       <Link to="/new-review">
-          <button className="Rbutton" onClick={NewReview}>Add Review</button>
-          </Link>
+        <button
+          className="Rbutton"
+          onClick={NewReview}
+          disabled={historyBookings.length === 0}
+        >
+          Add Review
+        </button>
+      </Link>
     </div>
   );
 };

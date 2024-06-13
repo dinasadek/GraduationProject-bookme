@@ -6,31 +6,31 @@ import { AuthContext } from "../../context/AuthContext";
 import './newReview.css';
 //import { SearchContext } from "../../context/SearchContext";
 import { useContext } from "react";
-import { v4 as uuidv4 } from 'uuid';
+//import { v4 as uuidv4 } from 'uuid';
 //import { AuthProvider } from './AuthContext';
 import { useEffect } from 'react';
-import Footer from "../../components/footer/Footer";
-import MailList from "../../components/mailList/MailList";
+//import Footer from "../../components/footer/Footer";
+//import MailList from "../../components/mailList/MailList";
 import Navbar from "../../components/navbar/Navbar";
 
 
 
 const NewReview = () => {
 
-  const generateCustomUUID = () => {
+  /*const generateCustomUUID = () => {
     const uuid = uuidv4();
     // Remove hyphens and return the first 22 characters
     if (!user.reviews.some(review => review.id === uuid.replace(/-/g, '').substring(0, 22))) {
       // If the ID is not found in any of the reviews, return the ID
       return uuid.replace(/-/g, '').substring(0, 22);
     }
-  };
+  };*/
   //const {hotel} = useContext(AuthContext);
   const { user  } = useContext(AuthContext);
+  
 
   const [hotelNames, setHotelNames] = useState([]);
   
-
   useEffect(() => {
     const fetchHotelNames = async () => {
       try {
@@ -54,7 +54,7 @@ const NewReview = () => {
 
   const currentDate = new Date().toISOString().slice(0, 10);
   const [review, setReview] = useState({
-    reviewId: generateCustomUUID(),
+    //reviewId: generateCustomUUID(),
     userId:user._id,
     date:currentDate,
     hotelName: '',

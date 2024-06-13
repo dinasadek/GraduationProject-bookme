@@ -80,7 +80,7 @@ const HistoryBookings = () => {
           if (!response.ok) {
             throw new Error('Failed to add booking');
           }else{
-            await removeCurrentBookingFromUser(bookingCard.id);
+            await removeCurrentBookingFromUser(bookingCard._id);
             console.log("This booking became old:", bookingCard);
           }
           
@@ -132,7 +132,7 @@ const HistoryBookings = () => {
           <h2>History Bookings</h2>
           <ul>
             {historyBookings.map((booking) => (
-              <li key={booking.id}>
+              <li key={booking._id}>
                 <div className="booking-details">
                   <div>
                     <span className="booking-date">

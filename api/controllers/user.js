@@ -201,8 +201,8 @@ export const removeCurrentBookingFromUser = async (req, res, next) => {
   try {
     // Find the user by ID and update their CurrentBookings array
     const user = await User.findOneAndUpdate(
-      { _id: userId, 'CurrentBookings.id': bookingId }, // Find user by ID and bookingId
-      { $pull: { CurrentBookings: { id: bookingId } } }, // Remove the booking with matching ID
+      { _id: userId, 'CurrentBookings._id': bookingId }, // Find user by ID and bookingId
+      { $pull: { CurrentBookings: { _id: bookingId } } }, // Remove the booking with matching ID
       { new: true } // Return the updated document
     );
 

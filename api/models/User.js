@@ -30,12 +30,26 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    reviews:{
-      type:Array
-    },
-    CurrentBookings:{
-      type:Array
-    },
+    reviews:[{
+      userId:{type:String},
+      date:{type:String},
+      hotelName: {type:String},
+      rating: {type:Number},
+      comment: {type:String}
+    }],
+    CurrentBookings:[{
+        fromDate: {type:String},
+        toDate: {type:String},
+        city: {type:String},
+        numberOfAdults: {type:Number},
+        numberOfChildren: {type:Number},
+        hotelName: {type:String},
+        numberOfRooms: {type:Number},
+        roomNames: {type:Array},
+        ReservationDetails: {type:Array},
+        totalCost: {type:Number}
+    }
+  ],
     HistoryBookings:{
       type:Array
     },

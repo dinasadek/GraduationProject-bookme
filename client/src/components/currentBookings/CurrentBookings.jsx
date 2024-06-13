@@ -67,14 +67,14 @@ const CurrentBookings = () => {
     };
 
     const handleDeleteBooking = async (booking) => {
-        await removeCurrentBookingFromUser(booking.id);
+        await removeCurrentBookingFromUser(booking._id);
         const dates = getDatesInRange(booking.fromDate, booking.toDate);
         deleteDatesFromRooms(
             booking.ReservationDetails.map((room) => ({ roomid: room.roomid, selectedRoomsId: room.selectedRoomsId })),
             dates
         );
 
-        setCurrentBookings((prevBookings) => prevBookings.filter((prevBooking) => prevBooking.id !== booking.id));
+        setCurrentBookings((prevBookings) => prevBookings.filter((prevBooking) => prevBooking._id !== booking._id));
         setShowAlert(true); // Show alert after booking cancellation
         setTimeout(() => setShowAlert(false), 2000); // Hide alert after 2 seconds
     };
@@ -102,7 +102,7 @@ const CurrentBookings = () => {
             {showAlert && <div className="alert">Your reservation has been canceled</div>}
             <ul>
                 {currentBookings.map((booking) => (
-                    <li key={booking.id}>
+                    <li key={booking._id}>
                         <div className="booking-details">
                             <div>
                                 <span className="booking-date">

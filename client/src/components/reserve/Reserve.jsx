@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { SearchContext } from "../../context/SearchContext";
 import useFetch from "../../hooks/useFetch";
 import "./reserve.css";
-import { v4 as uuidv4 } from 'uuid';
+//import { v4 as uuidv4 } from 'uuid';
 
 const Reserve = ({ setOpen, hotelId }) => {
   const [selectedRooms, setSelectedRooms] = useState([]);
@@ -16,12 +16,12 @@ const Reserve = ({ setOpen, hotelId }) => {
   const { dates, options } = useContext(SearchContext);
   const { user  } = useContext(AuthContext);
 
-  const generateCustomUUID = () => {
+  /* generateCustomUUID = () => {
     const uuid = uuidv4();
     if (!user.CurrentBookings.some(booking => booking.id === uuid.replace(/-/g, '').substring(0, 22))) {
       return uuid.replace(/-/g, '').substring(0, 22);
     }
-  };
+  };*/
 
   const getDatesInRange = (startDate, endDate) => {
     const start = new Date(startDate);
@@ -165,7 +165,7 @@ const Reserve = ({ setOpen, hotelId }) => {
       const RoomDetails = reservationData.roomDetails.filter(room => roomNames.includes(room.roomtitle));
 
       const bookingCard = {
-        id: generateCustomUUID(),
+        
         fromDate: fromDate,
         toDate: toDate,
         city: hoteldata.data.city,
