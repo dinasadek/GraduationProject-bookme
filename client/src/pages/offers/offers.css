@@ -211,12 +211,12 @@
     font-style: italic;
   }
   
-  .End_Page{
+  .End_Page {
     margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
   }
   
   
