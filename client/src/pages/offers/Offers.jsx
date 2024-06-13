@@ -1,21 +1,21 @@
+import React, { useContext, useEffect, useState } from 'react';
 import "./offers.css";
-import React, { useState , useContext,useRef, useEffect} from 'react';
 // import { useHistory } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
-import { Link } from "react-router-dom";
+//import DatePicker from 'react-datepicker';
+//import { Link } from "react-router-dom";
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import useFetch from "../../hooks/useFetch";
-import axios from "axios";
-import { DateRange } from 'react-date-range';
-import { format } from 'date-fns';
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import 'slick-carousel/slick/slick.css';
+//import useFetch from "../../hooks/useFetch";
 import {
   faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import { format } from 'date-fns';
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 
 // import { useNavigate } from "react-router-dom";
 // import { useDispatch } from 'react-redux';
@@ -23,10 +23,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 // import Room from "../../../../api/models/Room";
-import Navbar from "../../components/navbar/Navbar";
+import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import MailList from "../../components/mailList/MailList";
-import Footer from "../../components/footer/Footer";
+import Navbar from "../../components/navbar/Navbar";
 
 
 
@@ -35,7 +35,6 @@ const HolidayOffers = () => {
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   //const [hotelsWithOffers, setHotelsWithOffers] = useState([]);
-  const [hotelsWithOffers, setHotelsWithOffers] = useState([]);
   const [cityOffers, setCityOffers] = useState([]);
   const [cardStates, setCardStates] = useState([]);
   const [summerOfferCities, setSummerOfferCities] = useState([]);
@@ -98,7 +97,7 @@ const HolidayOffers = () => {
   // }, [calendarRef]);
   // <button className="book-now-button" onClick={() => handleBookNowClick(hotel._id)}>Book Now</button>
 
-  const offers = [
+  /*const offers = [
     {
       title: 'Summer Offers',
       brief: 'Enjoy the summer with our special offers!',
@@ -127,7 +126,7 @@ const HolidayOffers = () => {
       ],
     },
     // Add other offers here...
-  ];
+  ];*/
 
   const PrevArrow = (props) => {
     const { onClick } = props;
@@ -256,7 +255,7 @@ const HolidayOffers = () => {
         const response = await axios.get("/hotels/roomsWithOffers");
         const cities = response.data.reduce((acc, hotel) => {
           const city = hotel.hotelCity;
-          const offerKind = hotel.offerKind; 
+          //const offerKind = hotel.offerKind; 
           if (!acc[city]) {
             acc[city] = [];
           }

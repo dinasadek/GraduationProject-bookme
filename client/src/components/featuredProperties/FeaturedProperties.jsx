@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import "./featuredProperties.css";
 
 const FeaturedProperties = () => {
-  const { data, loading, error } = useFetch("/hotels?featured=true&limit=4");
+  const { data, loading } = useFetch("/hotels?featured=true&limit=4");
 
   return (
     <div className="fp">
@@ -11,6 +12,7 @@ const FeaturedProperties = () => {
       ) : (
         <>
           {data.map((item) => (
+            <Link to={`/hotels/${item._id}`} style={{ color: "inherit", textDecoration: "none" }}>
             <div className="fpItem" key={item._id}>
               <img
                 src={item.photos[0]}
@@ -24,7 +26,7 @@ const FeaturedProperties = () => {
                 <button>{item.rating}</button>
                 <span>Excellent</span>
               </div>}
-            </div>
+            </div></Link>
           ))}
         </>
       )}
