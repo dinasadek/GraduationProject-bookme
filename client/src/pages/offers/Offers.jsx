@@ -554,8 +554,10 @@ const HolidayOffers = () => {
       )}
       
     </div>
-    <MailList />
-    <Footer />
+   <div className="End_Page">
+        <MailList />
+        <Footer />
+      </div>
     </div>
     
   );
