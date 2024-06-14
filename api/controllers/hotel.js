@@ -143,4 +143,23 @@ export const getRoomsWithOffers = async (req, res, next) => {
   }
 };
 
+export const getHotelsByType = async (req, res, next) => {
+  const { type } = req.params; // Extract 'type' from request parameters
+
+  try {
+    // Find hotels that match the specified type
+    const hotels = await Hotel.find({ type });
+
+    // If no hotels are found, send a 404 response
+    if (!hotels.length) {
+      return res.status(404).json({ message: "No hotels found with the specified type" });
+    }
+
+    // Send the found hotels as the response
+    res.status(200).json(hotels);
+  } catch (error) {
+    // Handle any errors that occur during the database query
+    next(error);
+  }
+};
 
