@@ -13,7 +13,9 @@
   gap: 10px;
   position: relative;
 }
-
+.hDistance {
+  font-size: 15px;
+}
 .bookNow {
   position: absolute;
   top: 10px;
