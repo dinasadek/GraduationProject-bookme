@@ -2,7 +2,6 @@ import {
   faBed,
   faCalendarDays,
   faDollar,
-  faFileInvoice,
   faHome,
   faPerson,
   faPhone
@@ -68,12 +67,6 @@ const Header = ({ type }) => {
       case "/offers":
         setActiveItem("Offers");
         break;
-      case "/plans":
-        setActiveItem("Plans");
-        break;
-      case "/rooms":
-        setActiveItem("Rooms");
-        break;
       case "/contact":
         setActiveItem("Contact");
         break;
@@ -119,34 +112,6 @@ const Header = ({ type }) => {
           >
             <FontAwesomeIcon icon={faDollar} />
             <span>Offers & Inspiration</span>
-          </div>
-          <div
-            className={
-              activeItem === "Plans"
-                ? "headerListItem active"
-                : "headerListItem"
-            }
-            onClick={() => {
-              setActiveItem("Plans");
-              //navigate("/plans");
-            }}
-          >
-            <FontAwesomeIcon icon={faFileInvoice} />
-            <span>Plans</span>
-          </div>
-          <div
-            className={
-              activeItem === "Rooms"
-                ? "headerListItem active"
-                : "headerListItem"
-            }
-            onClick={() => {
-              setActiveItem("Rooms");
-              //navigate("/rooms");
-            }}
-          >
-            <FontAwesomeIcon icon={faBed} />
-            <span>Rooms</span>
           </div>
           <div
             className={

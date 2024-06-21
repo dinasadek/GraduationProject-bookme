@@ -1,23 +1,76 @@
-import "./widget.scss";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import StoreIcon from "@mui/icons-material/Store";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import "./widget.scss";
 
 const Widget = ({ type }) => {
+  const [userCount, setUserCount] = useState(0);
+  const [hotelCount, setHotelCount] = useState(0);
+  const [roomCount, setRoomCount] = useState(0);
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await fetch('http://localhost:8800/api/users');
+        if (!response.ok) {
+          throw new Error('Failed to fetch users');
+        }
+        const data = await response.json();
+        setUserCount(data.length);
+      } catch (error) {
+        console.error('Error fetching users:', error.message);
+      }
+    };
+    getUsers();
+  }, []);
+
+  useEffect(() => {
+    const getRooms = async () => {
+      try {
+        const response = await fetch('http://localhost:8800/api/rooms');
+        if (!response.ok) {
+          throw new Error('Failed to fetch rooms');
+        }
+        const data = await response.json();
+        setRoomCount(data.length);
+      } catch (error) {
+        console.error('Error fetching rooms:', error.message);
+      }
+    };
+    getRooms();
+  }, []);
+
+  useEffect(() => {
+    const getHotels = async () => {
+      try {
+        const response = await fetch('http://localhost:8800/api/hotels');
+        if (!response.ok) {
+          throw new Error('Failed to fetch hotels');
+        }
+        const data = await response.json();
+        setHotelCount(data.length);
+      } catch (error) {
+        console.error('Error fetching hotels:', error.message);
+      }
+    };
+    getHotels();
+  }, []);
+
   let data;
 
-  //temporary
-  const amount = 100;
-  const diff = 20;
-
+  let amount;
+  
   switch (type) {
+    
     case "user":
+      amount=userCount;
       data = {
         title: "USERS",
         isMoney: false,
         link: "See all users",
+        to:'/users',
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -29,13 +82,15 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "order":
+    case "hotel":
+      amount=hotelCount;
       data = {
-        title: "ORDERS",
+        title: "HOTELS",
         isMoney: false,
-        link: "View all orders",
+        link: "View all hotels",
+        to:'/hotels',
         icon: (
-          <ShoppingCartOutlinedIcon
+          <StoreIcon 
             className="icon"
             style={{
               backgroundColor: "rgba(218, 165, 32, 0.2)",
@@ -45,31 +100,17 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "earning":
+    case "room":
+      amount=roomCount;
       data = {
-        title: "EARNINGS",
-        isMoney: true,
-        link: "View net earnings",
+        title: "ROOMS",
+        isMoney: false,
+        link: "View all rooms",
+        to:'/rooms',
         icon: (
-          <MonetizationOnOutlinedIcon
+          <CreditCardIcon
             className="icon"
             style={{ backgroundColor: "rgba(0, 128, 0, 0.2)", color: "green" }}
-          />
-        ),
-      };
-      break;
-    case "balance":
-      data = {
-        title: "BALANCE",
-        isMoney: true,
-        link: "See details",
-        icon: (
-          <AccountBalanceWalletOutlinedIcon
-            className="icon"
-            style={{
-              backgroundColor: "rgba(128, 0, 128, 0.2)",
-              color: "purple",
-            }}
           />
         ),
       };
@@ -85,12 +126,13 @@ const Widget = ({ type }) => {
         <span className="counter">
           {data.isMoney && "$"} {amount}
         </span>
+        <Link to={data.to} style={{ textDecoration: "none" }}> 
         <span className="link">{data.link}</span>
+        </Link>
       </div>
       <div className="right">
         <div className="percentage positive">
           <KeyboardArrowUpIcon />
-          {diff} %
         </div>
         {data.icon}
       </div>

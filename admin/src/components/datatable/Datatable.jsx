@@ -1,16 +1,15 @@
-import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource";
-import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import useFetch from "../../hooks/useFetch";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
+import "./datatable.scss";
 
-const Datatable = ({columns}) => {
+const Datatable = ({ columns }) => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
-  const [list, setList] = useState();
-  const { data, loading, error } = useFetch(`/${path}`);
+  const [list, setList] = useState([]);
+  const { data } = useFetch(`/${path}`);
 
   useEffect(() => {
     setList(data);
@@ -20,7 +19,9 @@ const Datatable = ({columns}) => {
     try {
       await axios.delete(`/${path}/${id}`);
       setList(list.filter((item) => item._id !== id));
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const actionColumn = [
@@ -31,7 +32,7 @@ const Datatable = ({columns}) => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
+            <Link to={`/users/${params.row._id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -45,6 +46,9 @@ const Datatable = ({columns}) => {
       },
     },
   ];
+
+ 
+
   return (
     <div className="datatable">
       <div className="datatableTitle">
@@ -56,7 +60,7 @@ const Datatable = ({columns}) => {
       <DataGrid
         className="datagrid"
         rows={list}
-        columns={columns.concat(actionColumn)}
+        columns={columns.concat( actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection
@@ -67,3 +71,4 @@ const Datatable = ({columns}) => {
 };
 
 export default Datatable;
+

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export const userColumns = [
   { field: "_id", headerName: "ID", width: 70 },
   {
@@ -34,6 +35,20 @@ export const userColumns = [
     headerName: "Phone",
     width: 100,
   },
+    {
+      field: "messages",
+      headerName: "Messages",
+      width: 200,
+      renderCell: (params) => {
+        return (
+          <div className="cellAction">
+            <Link to={`/users/${params.row._id}/messages`} style={{ textDecoration: "none" }}>
+              <div className="viewMButton">View Messages</div>
+            </Link>
+          </div>
+        );
+      },
+    }
 ];
 
 export const hotelColumns = [

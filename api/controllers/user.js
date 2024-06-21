@@ -216,3 +216,37 @@ export const removeCurrentBookingFromUser = async (req, res, next) => {
     next(error);
   }
 };
+export const addMessageToUser = async (req, res) => {
+  const { name, email, message } = req.body;
+
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.Messages.push({ name, email, message });
+    await user.save();
+
+    res.status(200).json({ message: 'Message sent successfully' });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+
+export const getUserMessages = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const userMessages = user.Messages;
+    res.status(200).json(userMessages);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};
+

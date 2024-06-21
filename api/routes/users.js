@@ -2,19 +2,21 @@ import express from "express";
 import {
   addCurrentBookingToUser,
   addHistoryBookingToUser,
+  addMessageToUser,
   addReviewToUser,
   createUsers,
   deleteUser,
   getUser,
   getUserCurrentBookings,
   getUserHistoryBookings,
+  getUserMessages,
   getUserReviews,
   getUsers,
   removeCurrentBookingFromUser,
   updateUser
 } from "../controllers/user.js";
 
-import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
+import { verifyUser } from "../utils/verifyToken.js";
 //const user = require("../models/User.js")
 const router = express.Router();
 
@@ -43,7 +45,7 @@ router.delete("/:id", verifyUser, deleteUser);
 router.get("/:id", getUser);
 
 //GET ALL
-router.get("/", verifyAdmin, getUsers);
+router.get("/", getUsers);
 
 
 //ADD REVIEW
@@ -58,6 +60,10 @@ router.get('/:id/currentBookings', getUserCurrentBookings);
 
 router.post("/:id/historybookings",addHistoryBookingToUser);
 router.get("/:id/historybookings",getUserHistoryBookings);
+
+router.post('/:id/messages',addMessageToUser);
+router.get('/:id/messages',getUserMessages);
+
 
 
 export default router;

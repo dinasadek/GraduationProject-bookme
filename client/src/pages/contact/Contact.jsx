@@ -5,15 +5,15 @@ import MailList from "../../components/mailList/MailList";
 import Navbar from "../../components/navbar/Navbar";
 import { AuthContext } from "../../context/AuthContext";
 import './contact.css'; // Importing CSS for styling
+
 const Contact = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         message: ''
     });
-    const { loading, error} = useContext(AuthContext);
+    const { user, loading, error } = useContext(AuthContext);
 
-    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -22,15 +22,29 @@ const Contact = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData); // Ideally, here you would send the data to the server
-        alert('Thank you for your message. We will get back to you shortly.');
-        setFormData({
-            name: '',
-            email: '',
-            message: ''
-        });
+        try {
+            const response = await fetch(`http://localhost:8800/api/users/${user._id}/messages`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            if (!response.ok) {
+                throw new Error('Failed to send message');
+            }
+            alert('Thank you for your message. We will get back to you shortly.');
+            setFormData({
+                name: '',
+                email: '',
+                message: ''
+            });
+        } catch (err) {
+            console.error(err.message);
+            alert('There was an error sending your message. Please try again later.');
+        }
     };
 
     return (
@@ -65,15 +79,14 @@ const Contact = () => {
                 onChange={handleChange}
                 required
             ></textarea>
-            <button disabled={loading} onClick={handleSubmit} className="3Button">Send</button>
+            <button disabled={loading} className="3Button">Send</button>
             {error && <span>{error.message}</span>}
         </form>
         <div className="End_Page">
-        <MailList />
-        <Footer />
-      </div>
-
+          <MailList />
+          <Footer />
         </div>
+      </div>
     );
 };
 
