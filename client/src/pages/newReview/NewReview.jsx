@@ -11,6 +11,7 @@ const NewReview = () => {
   const [historyBookings, setHistoryBookings] = useState([]);
   const [review, setReview] = useState({
     userId: user._id,
+    hotelId: '',
     date: new Date().toISOString().slice(0, 10),
     hotelName: '',
     rating: 0,
@@ -35,7 +36,8 @@ const NewReview = () => {
     fetchHistoryBookings();
   }, [userId]);
 
-  const hotelNames = historyBookings.map(booking => booking.hotelName);
+  // Extract unique hotel names
+  const uniqueHotelNames = Array.from(new Set(historyBookings.map(booking => booking.hotelName)));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,7 +64,6 @@ const NewReview = () => {
       if (!response.ok) {
         throw new Error('Failed to update user reviews');
       }
-
     } catch (error) {
       console.error('Error updating user reviews:', error);
     }
@@ -70,11 +71,24 @@ const NewReview = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!review.hotelName || review.rating === 0 || !review.comment) {
+
+    const selectedHotel = historyBookings.find(booking => booking.hotelName === review.hotelName);
+    if (!selectedHotel) {
+      alert('Please select a valid hotel');
+      return;
+    }
+
+    const updatedReview = {
+      ...review,
+      hotelId: selectedHotel.ReservationDetails[0].hotelId // Assuming ReservationDetails contains hotelId
+    };
+
+    if (!updatedReview.hotelName || updatedReview.rating === 0 || !updatedReview.comment) {
       alert('Please fill in all the review fields first');
       return;
     }
-    updateUserReviews(review);
+
+    updateUserReviews(updatedReview);
     navigate('/profile');
   };
 
@@ -87,7 +101,7 @@ const NewReview = () => {
           <label htmlFor="hotelName">Hotel Name:</label>
           <select id="hotelName" name="hotelName" value={review.hotelName} onChange={handleChange}>
             <option value="">Select Hotel</option>
-            {hotelNames.map((hotel, index) => (
+            {uniqueHotelNames.map((hotel, index) => (
               <option key={index} value={hotel}>{hotel}</option>
             ))}
           </select>

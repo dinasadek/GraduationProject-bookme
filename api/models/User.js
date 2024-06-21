@@ -32,6 +32,7 @@ const UserSchema = new mongoose.Schema(
     },
     reviews:[{
       userId:{type:String},
+      hotelId:{type:String},
       date:{type:String},
       hotelName: {type:String},
       rating: {type:Number},
