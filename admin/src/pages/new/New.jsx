@@ -1,13 +1,14 @@
-import "./new.scss";
-import Sidebar from "../../components/sidebar/Sidebar";
-import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
-import { useState } from "react";
 import axios from "axios";
+import { useState } from "react";
+import Navbar from "../../components/navbar/Navbar";
+import Sidebar from "../../components/sidebar/Sidebar";
+import "./new.scss";
 
 const New = ({ inputs, title }) => {
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState(null);
   const [info, setInfo] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -16,28 +17,63 @@ const New = ({ inputs, title }) => {
   const handleClick = async (e) => {
     e.preventDefault();
     const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "upload");
-    try {
-      const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/lamadev/image/upload",
-        data
-      );
 
-      const { url } = uploadRes.data;
+    if (file) {
+      data.append("file", file);
+      data.append("upload_preset", "upload");
 
+      try {
+        const uploadRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/dqfvmwrye/image/upload",
+          data
+        );
+
+        const { url } = uploadRes.data;
+
+        const newUser = {
+          ...info,
+          img: url,
+        };
+
+        await axios.post("/auth/register", newUser);
+
+        // Clear the form and show success message
+        setFile(null);
+        setInfo({});
+        setSuccessMessage("User added successfully!");
+
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 3000);
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      // If no file is uploaded, use the default image URL
       const newUser = {
         ...info,
-        img: url,
+        img: "https://i.ibb.co/MBtjqXQ/no-avatar.gif",
       };
 
-      await axios.post("/auth/register", newUser);
-    } catch (err) {
-      console.log(err);
+      try {
+        await axios.post("/auth/register", newUser);
+
+        // Clear the form and show success message
+        setFile(null);
+        setInfo({});
+        setSuccessMessage("User added successfully!");
+
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 3000);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
-  console.log(info);
   return (
     <div className="new">
       <Sidebar />
@@ -79,10 +115,12 @@ const New = ({ inputs, title }) => {
                     type={input.type}
                     placeholder={input.placeholder}
                     id={input.id}
+                    value={info[input.id] || ""}
                   />
                 </div>
               ))}
               <button onClick={handleClick}>Send</button>
+              {successMessage && <p className="successMessage">{successMessage}</p>}
             </form>
           </div>
         </div>

@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 const RoomSchema = new mongoose.Schema(
   {
+    hotelId:{
+      type: String,
+      required:true
+    },
     title: {
       type: String,
       required: true,
@@ -60,3 +64,4 @@ RoomSchema.pre("save", function (next) {
 
 
 export default mongoose.model("Room", RoomSchema);
+

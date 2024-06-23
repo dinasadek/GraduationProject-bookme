@@ -4,6 +4,7 @@ import {
   deleteDatesFromRooms,
   deleteOldDatesFromRooms,
   deleteRoom,
+  getHotelIdByRoomId,
   getRoom,
   getRooms,
   updateRoom,
@@ -29,7 +30,8 @@ router.get("/", getRooms);
 
 router.delete("/deleteoldAvailability",deleteOldDatesFromRooms);
 router.delete("/deletecanceledAvailability",deleteDatesFromRooms);
-
+router.get('/:id/hotel',getHotelIdByRoomId);
 
 
 export default router;
+
