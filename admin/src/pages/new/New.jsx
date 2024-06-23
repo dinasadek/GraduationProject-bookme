@@ -9,6 +9,7 @@ const New = ({ inputs, title }) => {
   const [file, setFile] = useState(null);
   const [info, setInfo] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -17,6 +18,13 @@ const New = ({ inputs, title }) => {
   const handleClick = async (e) => {
     e.preventDefault();
     const data = new FormData();
+
+    // Check if all fields are filled
+    const allFieldsFilled = inputs.every((input) => info[input.id]);
+    if (!allFieldsFilled) {
+      setErrorMessage("Please fill in all fields.");
+      return;
+    }
 
     if (file) {
       data.append("file", file);
@@ -41,6 +49,7 @@ const New = ({ inputs, title }) => {
         setFile(null);
         setInfo({});
         setSuccessMessage("User added successfully!");
+        setErrorMessage("");
 
         // Hide success message after 3 seconds
         setTimeout(() => {
@@ -63,6 +72,7 @@ const New = ({ inputs, title }) => {
         setFile(null);
         setInfo({});
         setSuccessMessage("User added successfully!");
+        setErrorMessage("");
 
         // Hide success message after 3 seconds
         setTimeout(() => {
@@ -121,6 +131,7 @@ const New = ({ inputs, title }) => {
               ))}
               <button onClick={handleClick}>Send</button>
               {successMessage && <p className="successMessage">{successMessage}</p>}
+              {errorMessage && <p className="errorMessage">{errorMessage}</p>}
             </form>
           </div>
         </div>
@@ -130,3 +141,5 @@ const New = ({ inputs, title }) => {
 };
 
 export default New;
+
+

@@ -8,19 +8,27 @@ import "./newHotel.scss";
 
 const NewHotel = () => {
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
   const [rooms, setRooms] = useState([]);
-
 
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
- 
-
   const handleClick = async (e) => {
     e.preventDefault();
+
+    // Validate that all required fields are filled
+    const requiredFields = [...hotelInputs.map((input) => input.id)];
+    const emptyFields = requiredFields.filter((field) => !info[field]);
+
+    if (emptyFields.length > 0) {
+      setErrorMessage("Please fill in all the fields.");
+      return;
+    }
+
     try {
       const list = await Promise.all(
         Object.values(files).map(async (file) => {
@@ -44,12 +52,14 @@ const NewHotel = () => {
       };
 
       await axios.post("/hotels", newhotel);
-       console.log(newhotel);
+      console.log(newhotel);
+
       // Clear the form and show success message
       setFiles("");
       setInfo({});
       setRooms([]);
       setSuccessMessage("Hotel added successfully!");
+      setErrorMessage(""); // Clear error message
 
       // Hide success message after 3 seconds
       setTimeout(() => {
@@ -58,12 +68,10 @@ const NewHotel = () => {
 
       // Clear input values manually
       document.getElementById("file").value = "";
-      hotelInputs.forEach(input => {
+      hotelInputs.forEach((input) => {
         document.getElementById(input.id).value = "";
       });
-      document.getElementById("featured").value = false;
       document.getElementById("rooms").selectedIndex = -1;
-
     } catch (err) {
       console.log(err);
     }
@@ -114,15 +122,9 @@ const NewHotel = () => {
                   />
                 </div>
               ))}
-              <div className="formInput">
-                <label>Featured</label>
-                <select id="featured" onChange={handleChange}>
-                  <option value={false}>No</option>
-                  <option value={true}>Yes</option>
-                </select>
-              </div>
               <button onClick={handleClick}>Send</button>
             </form>
+            {errorMessage && <p className="errorMessage">{errorMessage}</p>}
             {successMessage && <p className="successMessage">{successMessage}</p>}
           </div>
         </div>

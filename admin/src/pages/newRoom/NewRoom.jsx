@@ -8,6 +8,7 @@ import "./newRoom.scss";
 
 const NewRoom = () => {
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // State for error message
   const [info, setInfo] = useState({});
   const [hotelId, setHotelId] = useState(""); // Initialize with an empty string
   const [rooms, setRooms] = useState("");
@@ -29,6 +30,15 @@ const NewRoom = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    // Validate that all required fields are filled
+    const requiredFields = [...roomInputs.map((input) => input.id), "hotelId", "rooms"];
+    const emptyFields = requiredFields.filter((field) => !info[field] && !hotelId && !rooms);
+
+    if (emptyFields.length > 0) {
+      setErrorMessage("Please fill in all the fields.");
+      return;
+    }
+
     const roomNumbers = rooms.split(",").map((room) => ({ number: room }));
     try {
       await axios.post(`/rooms/${hotelId}`, { ...info, roomNumbers, hotelId });
@@ -37,6 +47,7 @@ const NewRoom = () => {
       setHotelId("");
       setRooms("");
       setSuccessMessage("Room added successfully!");
+      setErrorMessage(""); // Clear error message
 
       // Hide success message after 3 seconds
       setTimeout(() => {
@@ -44,6 +55,7 @@ const NewRoom = () => {
       }, 3000);
     } catch (err) {
       console.log(err);
+      setErrorMessage("Please fill in all the fields.");
     }
   };
 
@@ -100,6 +112,9 @@ const NewRoom = () => {
               </div>
               <button onClick={handleClick}>Send</button>
             </form>
+            {errorMessage && (
+              <p className="errorMessage">{errorMessage}</p>
+            )}
             {successMessage && (
               <p className="successMessage">{successMessage}</p>
             )}
