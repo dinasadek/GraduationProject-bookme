@@ -1,104 +1,79 @@
-.payment-container {
-
-    font-style:italic;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 7px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    touch-action:double-tap-zoom;
-    color:#FFFFFF;
-    letter-spacing: .03cm;
-    font-weight:1000;
-    font-size: 40px;
-    display: block;
-    margin-bottom: 50PX;
-    margin-top: 50PX;
-    
-    
-  
-  }
-  
-  .payment-container h2 {
-    text-align: center;
-    
-  }
-  
-  h3.pay-here{
-  
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size: 25px;
-    margin-bottom: 19px;
-    color:darkseagreen;
-    font-weight:bolder;
-    text-align: center;
-   }
-  
-  
-  
-  
-  .form-group {
-    margin-bottom: 5px;
-    font-size: 20px;
-    font:initial;
-    color:rgb(2, 2, 100);
-  }
-  
-  .plabel {
-    display:table-footer-group;
-    margin-bottom: 10px;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-weight:100;
-    font-size:29px; 
-    color:#FFFFFF;
-    font-style:normal;
-    font:lighter; 
-    align-items: center;
-    
-  }
-  
-  .pinput[type='text'] {
-    width: 400px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    background-color:blanchedalmond;
-  }
-  
-  .pbutton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 200px;
-    height: auto;
-    margin: auto;
-    padding: 1rem 2rem;
-    text-align: center;
-    background-color: blue;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', 'Arial', 'sans-serif';
-    font-weight: 700;
-    font-size: 1rem; /* 16px */
-    letter-spacing: .03em;
-    touch-action: pinch-zoom;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-  }
-  
-  .pbutton:hover {
-    background-color: darkblue;
-    transform: scale(1.05);
-  }
-  
-  .pbutton:active {
-    background-color: navy;
-  }
-  
-  .pbutton:focus {
-    outline: 2px solid #FFFFFF;
-    outline-offset: 2px;
-  }
+.pay-here { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  height: 100vh; 
+  background-color: #f0f0f0; 
+} 
+ 
+.pay-here__title { 
+  font-size: 2.5rem; 
+  margin-bottom: 2rem; 
+} 
+ 
+.pay-here__form { 
+  background-color: #fff; 
+  padding: 2rem; 
+  border-radius: 8px; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+  width: 400px; 
+} 
+ 
+.pay-here__form-group { 
+  display: flex; 
+  flex-direction: column; 
+  margin-bottom: 1.5rem; 
+} 
+ 
+.pay-here__label { 
+  font-size: 1rem; 
+  font-weight: 600; 
+  margin-bottom: 0.5rem; 
+} 
+ 
+.pay-here__input { 
+  padding: 0.75rem 1rem; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  font-size: 1rem; 
+} 
+ 
+.pay-here__submit-btn { 
+  background-color: #288fe3; 
+  color: #fff; 
+  border: none; 
+  padding: 0.75rem 1.5rem; 
+  margin-left: 30%; 
+  font-size: 1rem; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+} 
+ 
+.pay-here__submit-btn:hover { 
+  background-color: #00b35a; 
+} 
+ 
+/* Alert message styles */ 
+.alert { 
+  position: fixed; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  background-color: #ffffff; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+  padding: 1.5rem 2rem; 
+  font-size: 1.2rem; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); 
+  z-index: 1000; 
+} 
+ 
+.alert-success { 
+  border-color: #28a745; 
+} 
+ 
+.alert-error { 
+  border-color: #dc3545; 
+}

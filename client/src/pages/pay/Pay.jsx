@@ -1,94 +1,84 @@
-import axios from "axios";
-import { useContext, useState } from "react";
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-// Assuming Navbar and other necessary components are imported correctly
-import Navbar from "../../components/navbar/Navbar";
 import "./pay.css";
 
 const Pay = () => {
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [cvv, setCvv] = useState('');
-  const { loading, error, dispatch } = useContext(AuthContext); // Must be inside the component
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    paymentMethod: 'fawry',
+    mobileNumber: '',
+    amount: '',
+  });
 
-  const handlePaymentSubmit = async (e) => { // Marked as async
-    e.preventDefault();
-    const credentials = { cardNumber, expiryDate, cvv }; // Defined credentials based on state
-    dispatch({ type: "PAYMENT_START" });
-    try {
-        const res = await axios.post("/auth/payment", credentials);
-        
-        dispatch({ type: "PAYMENT_SUCCESS", payload: res.data.details });
-        navigate("/");
-    } catch (err) {
-        dispatch({ type: "PAYMENT_FAILURE", payload: err.response.data });
-    }
-};
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    
+    const { paymentMethod, mobileNumber } = formData;
+    
+    if ((paymentMethod === 'fawry' || paymentMethod === 'vodafone_cash') && 
+        mobileNumber.length === 11 ) {
+      alert('Payment completed successfully');
+
+      // Clear the form fields after successful payment message
+      setFormData({
+        paymentMethod: 'fawry',
+        mobileNumber: '',
+        amount: ''
+      });
+
+      navigate('/');
+
+    } else {
+      alert('Failed to submit payment. Please check your input and try again.');
+    }
+  };
 
   return (
-    <div>
-      <Navbar />
-      <div className="page-style">
-        <div className="payment-container">
-          <h2> Pay Here ! </h2>
-          <h3 className="pay-here"> Enter Your payment details </h3>
-          <form onSubmit={handlePaymentSubmit}>
-            <div className="form-group">
-              <label className="plabel" htmlFor="cardNumber">Card Number</label>
-              <input className="pinput"
-                type="text"
-                id="cardNumber"
-                value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
-                placeholder="Enter card number"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="plabel" htmlFor="expiryDate">Expiry Date</label>
-              <input className="pinput"
-                type="text"
-                id="expiryDate"
-                value={expiryDate}
-                onChange={(e) => setExpiryDate(e.target.value)}
-                placeholder="MM/YY"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="plabel" htmlFor="cvv">CVV</label>
-              <input className="pinput"
-                type="text"
-                id="cvv"
-                value={cvv}
-                
-            onChange={(e) => setCvv(e.target.value)}
-            placeholder="Enter CVV"
-            required
+    <div className="pay-here">
+      <h1 className="pay-here__title">Pay Here</h1>
+      <form className="pay-here__form" onSubmit={handleSubmit}>
+        <div className="pay-here__form-group">
+          <label className="pay-here__label" htmlFor="paymentMethod">
+            Payment Method:
+          </label>
+          <select
+            className="pay-here__input"
+            name="paymentMethod"
+            value={formData.paymentMethod}
+            onChange={handleInputChange}
+          >
+            <option value="fawry">Fawry</option>
+            <option value="vodafone_cash">Vodafone Cash</option>
+          </select>
+        </div>
+        <div className="pay-here__form-group">
+          <label className="pay-here__label" htmlFor="mobileNumber">
+            Mobile Number:
+          </label>
+          <input
+            className="pay-here__input"
+            type="text"
+            name="mobileNumber"
+            value={formData.mobileNumber}
+            onChange={handleInputChange}
           />
         </div>
-        <button className="pbutton" type="submit"> Submit </button>
+        <button className="pay-here__submit-btn" type="submit">
+          Submit Payment
+        </button>
       </form>
-    
-    </div>
-     
-    <button disabled={loading} onClick={handlePaymentSubmit} className="pbutton">
-                    Payment
-                </button><br/><br/>
-      
-     {error && <span>{error.message}</span>}
-    </div>
-   
-    
-    
-  
-  
     </div>
   );
-  };
+};
 
 export default Pay;

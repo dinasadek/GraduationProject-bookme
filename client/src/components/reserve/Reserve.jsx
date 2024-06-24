@@ -192,7 +192,7 @@ const Reserve = ({ setOpen, hotelId }) => {
       }
 
       setOpen(false);
-      navigate('/');
+      navigate('/pay');
     } catch (error) {
       console.error('Error adding booking:', error.message);
     }
