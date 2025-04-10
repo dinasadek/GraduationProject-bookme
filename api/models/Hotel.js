@@ -47,6 +47,14 @@ const HotelSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  offers: [
+    {
+      title: String,
+      brief: String,
+      details: String,  // Corrected the typo from 'detials' to 'details'
+      offerKind:String,
+    }
+  ]
 });
 
 export default mongoose.model("Hotel", HotelSchema)

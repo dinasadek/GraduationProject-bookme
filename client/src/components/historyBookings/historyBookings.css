@@ -1,0 +1,14 @@
+.history-bookings {
+    padding: 20px;
+}
+
+.booking-details {
+    margin-bottom: 10px;
+}
+
+.booking-date,
+.booking-location,
+.booking-status,
+.booking-details {
+    margin-right: 10px;
+}

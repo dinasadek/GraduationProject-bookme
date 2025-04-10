@@ -30,10 +30,40 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    reviews:[{
+      userId:{type:String},
+      hotelId:{type:String},
+      date:{type:String},
+      hotelName: {type:String},
+      rating: {type:Number},
+      comment: {type:String}
+    }],
+    CurrentBookings:[{
+        fromDate: {type:String},
+        toDate: {type:String},
+        city: {type:String},
+        numberOfAdults: {type:Number},
+        numberOfChildren: {type:Number},
+        hotelName: {type:String},
+        numberOfRooms: {type:Number},
+        roomNames: {type:Array},
+        ReservationDetails: {type:Array},
+        totalCost: {type:Number}
+    }
+  ],
+    HistoryBookings:{
+      type:Array
+    },
     isAdmin: {
       type: Boolean,
       default: false,
     },
+    Messages: [{
+      name: { type: String, required: true },
+      email: { type: String, required: true },
+      message: { type: String, required: true },
+      date: { type: Date, default: Date.now }
+    }]
   },
   { timestamps: true }
 );

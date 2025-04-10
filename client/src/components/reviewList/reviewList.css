@@ -1,0 +1,50 @@
+.review_list {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.review_list h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.review_list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.review_list li {
+    margin-bottom: 30px;
+}
+
+.review_list span {
+    font-size: 14px;
+    color: #888;
+}
+
+.rating {
+    display: inline-block;
+}
+
+.star {
+    color: #ffc107;
+}
+
+.review_list p {
+    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.Rbutton{
+    padding: 10px 20px;
+    color: white;
+    background-color: #2196f3;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.Rbutton:disabled {
+    background-color: #b0bec5;
+    cursor: not-allowed;
+}

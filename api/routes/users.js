@@ -1,13 +1,27 @@
 import express from "express";
 import {
-  updateUser,
+  addCurrentBookingToUser,
+  addHistoryBookingToUser,
+  addMessageToUser,
+  addReviewToUser,
+  createUsers,
   deleteUser,
   getUser,
+  getUserCurrentBookings,
+  getUserHistoryBookings,
+  getUserMessages,
+  getUserReviews,
   getUsers,
+  removeCurrentBookingFromUser,
+  updateUser
 } from "../controllers/user.js";
-import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js";
 
+import { verifyUser } from "../utils/verifyToken.js";
+//const user = require("../models/User.js")
 const router = express.Router();
+
+router.post("/register", createUsers);
+
 
 // router.get("/checkauthentication", verifyToken, (req,res,next)=>{
 //   res.send("hello user, you are logged in")
@@ -22,15 +36,34 @@ const router = express.Router();
 // })
 
 //UPDATE
-router.put("/:id", verifyUser, updateUser);
+router.put("/:id", updateUser);
 
 //DELETE
 router.delete("/:id", verifyUser, deleteUser);
 
 //GET
-router.get("/:id", verifyUser, getUser);
+router.get("/:id", getUser);
 
 //GET ALL
-router.get("/", verifyAdmin, getUsers);
+router.get("/", getUsers);
+
+
+//ADD REVIEW
+router.post("/:id/reviews", addReviewToUser)
+
+// Define route to get all reviews of a specific user
+router.get('/:id/reviews', getUserReviews);
+
+router.post("/:id/currentbookings",addCurrentBookingToUser);
+router.delete("/:id/currentbookings",removeCurrentBookingFromUser);
+router.get('/:id/currentBookings', getUserCurrentBookings);
+
+router.post("/:id/historybookings",addHistoryBookingToUser);
+router.get("/:id/historybookings",getUserHistoryBookings);
+
+router.post('/:id/messages',addMessageToUser);
+router.get('/:id/messages',getUserMessages);
+
+
 
 export default router;

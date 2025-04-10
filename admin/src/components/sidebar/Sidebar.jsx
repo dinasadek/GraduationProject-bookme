@@ -1,37 +1,44 @@
-import "./sidebar.scss";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
-import StoreIcon from "@mui/icons-material/Store";
-import InsertChartIcon from "@mui/icons-material/InsertChart";
-import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
-import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Link } from "react-router-dom";
-import { DarkModeContext } from "../../context/darkModeContext";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import StoreIcon from "@mui/icons-material/Store";
 import { useContext } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { DarkModeContext } from "../../context/darkModeContext";
+
+import "./sidebar.scss";
 
 const Sidebar = () => {
-  const { dispatch } = useContext(DarkModeContext);
+  const { Ddispatch } = useContext(DarkModeContext);
+  const { dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+
+
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    return <Navigate to='/login' />;
+  };
+
   return (
     <div className="sidebar">
       <div className="top">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">lamadmin</span>
+          <span className="logo">book me</span>
         </Link>
       </div>
       <hr />
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
+          <Link to="/" style={{ textDecoration: "none" }}>
           <li>
             <DashboardIcon className="icon" />
             <span>Dashboard</span>
-          </li>
+          </li></Link>
           <p className="title">LISTS</p>
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
@@ -51,38 +58,14 @@ const Sidebar = () => {
               <span>Rooms</span>
             </li>
           </Link>
-          <li>
-            <LocalShippingIcon className="icon" />
-            <span>Delivery</span>
-          </li>
-          <p className="title">USEFUL</p>
-          <li>
-            <InsertChartIcon className="icon" />
-            <span>Stats</span>
-          </li>
-          <li>
-            <NotificationsNoneIcon className="icon" />
-            <span>Notifications</span>
-          </li>
-          <p className="title">SERVICE</p>
-          <li>
-            <SettingsSystemDaydreamOutlinedIcon className="icon" />
-            <span>System Health</span>
-          </li>
-          <li>
-            <PsychologyOutlinedIcon className="icon" />
-            <span>Logs</span>
-          </li>
-          <li>
-            <SettingsApplicationsIcon className="icon" />
-            <span>Settings</span>
-          </li>
           <p className="title">USER</p>
+          <Link to={`/users/${user._id}`} style={{ textDecoration: "none" }}>
           <li>
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
-          <li>
+          </Link>
+          <li onClick={handleLogout}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
           </li>
@@ -91,11 +74,11 @@ const Sidebar = () => {
       <div className="bottom">
         <div
           className="colorOption"
-          onClick={() => dispatch({ type: "LIGHT" })}
+          onClick={() => Ddispatch({ type: "LIGHT" })}
         ></div>
         <div
           className="colorOption"
-          onClick={() => dispatch({ type: "DARK" })}
+          onClick={() => Ddispatch({ type: "DARK" })}
         ></div>
       </div>
     </div>

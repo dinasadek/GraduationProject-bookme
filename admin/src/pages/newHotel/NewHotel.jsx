@@ -1,35 +1,34 @@
-import "./newHotel.scss";
-import Sidebar from "../../components/sidebar/Sidebar";
-import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
-import { useState } from "react";
-import { hotelInputs } from "../../formSource";
-import useFetch from "../../hooks/useFetch";
 import axios from "axios";
+import { useState } from "react";
+import Navbar from "../../components/navbar/Navbar";
+import Sidebar from "../../components/sidebar/Sidebar";
+import { hotelInputs } from "../../formSource";
+import "./newHotel.scss";
 
 const NewHotel = () => {
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [files, setFiles] = useState("");
   const [info, setInfo] = useState({});
   const [rooms, setRooms] = useState([]);
-
-  const { data, loading, error } = useFetch("/rooms");
 
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  const handleSelect = (e) => {
-    const value = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setRooms(value);
-  };
-  
-  console.log(files)
-
   const handleClick = async (e) => {
     e.preventDefault();
+
+    // Validate that all required fields are filled
+    const requiredFields = [...hotelInputs.map((input) => input.id)];
+    const emptyFields = requiredFields.filter((field) => !info[field]);
+
+    if (emptyFields.length > 0) {
+      setErrorMessage("Please fill in all the fields.");
+      return;
+    }
+
     try {
       const list = await Promise.all(
         Object.values(files).map(async (file) => {
@@ -37,7 +36,7 @@ const NewHotel = () => {
           data.append("file", file);
           data.append("upload_preset", "upload");
           const uploadRes = await axios.post(
-            "https://api.cloudinary.com/v1_1/lamadev/image/upload",
+            "https://api.cloudinary.com/v1_1/dqfvmwrye/image/upload",
             data
           );
 
@@ -53,15 +52,38 @@ const NewHotel = () => {
       };
 
       await axios.post("/hotels", newhotel);
-    } catch (err) {console.log(err)}
+      console.log(newhotel);
+
+      // Clear the form and show success message
+      setFiles("");
+      setInfo({});
+      setRooms([]);
+      setSuccessMessage("Hotel added successfully!");
+      setErrorMessage(""); // Clear error message
+
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
+
+      // Clear input values manually
+      document.getElementById("file").value = "";
+      hotelInputs.forEach((input) => {
+        document.getElementById(input.id).value = "";
+      });
+      document.getElementById("rooms").selectedIndex = -1;
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   return (
     <div className="new">
       <Sidebar />
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Add New Product</h1>
+          <h1>Add New Hotel</h1>
         </div>
         <div className="bottom">
           <div className="left">
@@ -100,28 +122,10 @@ const NewHotel = () => {
                   />
                 </div>
               ))}
-              <div className="formInput">
-                <label>Featured</label>
-                <select id="featured" onChange={handleChange}>
-                  <option value={false}>No</option>
-                  <option value={true}>Yes</option>
-                </select>
-              </div>
-              <div className="selectRooms">
-                <label>Rooms</label>
-                <select id="rooms" multiple onChange={handleSelect}>
-                  {loading
-                    ? "loading"
-                    : data &&
-                      data.map((room) => (
-                        <option key={room._id} value={room._id}>
-                          {room.title}
-                        </option>
-                      ))}
-                </select>
-              </div>
               <button onClick={handleClick}>Send</button>
             </form>
+            {errorMessage && <p className="errorMessage">{errorMessage}</p>}
+            {successMessage && <p className="successMessage">{successMessage}</p>}
           </div>
         </div>
       </div>

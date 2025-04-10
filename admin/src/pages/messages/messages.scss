@@ -1,0 +1,26 @@
+.messages-container {
+    margin: 20px;
+  }
+  
+  .messages-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .message-item {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .messages-loading,
+  .messages-error {
+    margin: 20px;
+    padding: 10px;
+    font-weight: bold;
+  }
+  
+  .messages-error {
+    color: red;
+  }
+  

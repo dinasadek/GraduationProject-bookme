@@ -73,7 +73,7 @@ export const countByType = async (req, res, next) => {
     const cabinCount = await Hotel.countDocuments({ type: "cabin" });
 
     res.status(200).json([
-      { type: "hotel", count: hotelCount },
+      { type: "hotels", count: hotelCount },
       { type: "apartments", count: apartmentCount },
       { type: "resorts", count: resortCount },
       { type: "villas", count: villaCount },
@@ -97,3 +97,69 @@ export const getHotelRooms = async (req, res, next) => {
     next(err);
   }
 };
+export const getHotelNames = async (req, res, next) => {
+  try {
+    const hotels = await Hotel.find({}, 'name'); // Retrieve only the 'name' field
+    res.status(200).json(hotels);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Fetch all rooms with offers and the hotel name
+export const getRoomsWithOffers = async (req, res, next) => {
+  try {
+    const hotels = await Hotel.find().populate("rooms");
+    const roomsWithOffers = [];
+
+    for (const hotel of hotels) {
+      for (const roomId of hotel.rooms) {
+        try {
+          const room = await Room.findById(roomId);
+          if (room && room.offers && room.offers.length > 0) {
+            roomsWithOffers.push({
+              hotelId: hotel._id,
+              hotelName: hotel.name,
+              hotelPhotos:hotel.photos,
+              hotelAddress:hotel.address,
+              hotelDistance:hotel.distance,
+              hotelCheapestPrice:hotel.cheapestPrice,
+              hotelCity:hotel.city,
+              roomTitle:room.title,
+              offerKind:hotel.offers[0].offerKind,
+              ...room._doc
+            });
+          }
+        } catch (error) {
+          console.error(`Error fetching room with ID ${roomId}:`, error);
+        }
+      }
+    }
+
+    res.status(200).json(roomsWithOffers);
+  } catch (error) {
+    console.error("Error fetching rooms with offers:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+export const getHotelsByType = async (req, res, next) => {
+  const { type } = req.params; // Extract 'type' from request parameters
+
+  try {
+    // Find hotels that match the specified type
+    const hotels = await Hotel.find({ type });
+
+    // If no hotels are found, send a 404 response
+    if (!hotels.length) {
+      return res.status(404).json({ message: "No hotels found with the specified type" });
+    }
+
+    // Send the found hotels as the response
+    res.status(200).json(hotels);
+  } catch (error) {
+    // Handle any errors that occur during the database query
+    next(error);
+  }
+};
+

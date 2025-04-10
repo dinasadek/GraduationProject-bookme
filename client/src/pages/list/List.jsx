@@ -1,23 +1,27 @@
-import "./list.css";
-import Navbar from "../../components/navbar/Navbar";
-import Header from "../../components/header/Header";
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
 import { format } from "date-fns";
+import { useState } from "react";
 import { DateRange } from "react-date-range";
+import { useLocation } from "react-router-dom";
+import Header from "../../components/header/Header";
+import Navbar from "../../components/navbar/Navbar";
 import SearchItem from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch";
+import "./list.css";
 
 const List = () => {
   const location = useLocation();
-  const [destination, setDestination] = useState(location.state.destination);
+  const [destination] = useState(location.state.destination);
   const [dates, setDates] = useState(location.state.dates);
   const [openDate, setOpenDate] = useState(false);
-  const [options, setOptions] = useState(location.state.options);
+  const [options] = useState(location.state.options);
   const [min, setMin] = useState(undefined);
   const [max, setMax] = useState(undefined);
 
-  const { data, loading, error, reFetch } = useFetch(
+ 
+  
+    
+
+  const { data, loading, reFetch } = useFetch(
     `/hotels?city=${destination}&min=${min || 0 }&max=${max || 999}`
   );
 
@@ -27,7 +31,7 @@ const List = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar/>
       <Header type="list" />
       <div className="listContainer">
         <div className="listWrapper">

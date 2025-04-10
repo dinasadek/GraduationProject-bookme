@@ -1,21 +1,23 @@
-import "./hotel.css";
-import Navbar from "../../components/navbar/Navbar";
-import Header from "../../components/header/Header";
-import MailList from "../../components/mailList/MailList";
-import Footer from "../../components/footer/Footer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleArrowLeft,
   faCircleArrowRight,
   faCircleXmark,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useState } from "react";
-import useFetch from "../../hooks/useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SearchContext } from "../../context/SearchContext";
-import { AuthContext } from "../../context/AuthContext";
+import Footer from "../../components/footer/Footer";
+import Header from "../../components/header/Header";
+import MailList from "../../components/mailList/MailList";
+import Navbar from "../../components/navbar/Navbar";
 import Reserve from "../../components/reserve/Reserve";
+import { AuthContext } from "../../context/AuthContext";
+import { SearchContext } from "../../context/SearchContext";
+import useFetch from "../../hooks/useFetch";
+import "./hotel.css";
+//import { useEffect } from "react";
+
 
 const Hotel = () => {
   const location = useLocation();
@@ -24,11 +26,12 @@ const Hotel = () => {
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  const { data, loading, error } = useFetch(`/hotels/find/${id}`);
+  const { data, loading} = useFetch(`/hotels/find/${id}`);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const { dates, options } = useContext(SearchContext);
+  
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
   function dayDifference(date1, date2) {
@@ -65,7 +68,7 @@ const Hotel = () => {
   };
   return (
     <div>
-      <Navbar />
+      <Navbar/>
       <Header type="list" />
       {loading ? (
         "loading"
@@ -98,8 +101,9 @@ const Hotel = () => {
             </div>
           )}
           <div className="hotelWrapper">
-            <button className="bookNow">Reserve or Book Now!</button>
+            <button onClick={handleClick} className="bookNow">Reserve or Book Now!</button>
             <h1 className="hotelTitle">{data.name}</h1>
+            <span className="hDistance">{data.city}{' , '}{data.type}</span>
             <div className="hotelAddress">
               <FontAwesomeIcon icon={faLocationDot} />
               <span>{data.address}</span>
@@ -142,11 +146,13 @@ const Hotel = () => {
               </div>
             </div>
           </div>
-          <MailList />
-          <Footer />
         </div>
       )}
       {openModal && <Reserve setOpen={setOpenModal} hotelId={id}/>}
+      <div className="End_Page">
+        <MailList />
+        <Footer />
+      </div>
     </div>
   );
 };

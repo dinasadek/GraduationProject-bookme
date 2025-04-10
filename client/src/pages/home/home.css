@@ -8,5 +8,10 @@
 
 .homeTitle{
   width: 1024px;
-  font-size: 20px;
+  font-size: 30px;
+  align-items: center;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
